@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vân Anh &amp; Hoài Nam — Từ giảng đường đến lễ đường</title>
+<meta name="description" content="Thiệp cưới online Vân Anh &amp; Hoài Nam">
+
+<!-- Open Graph để khi chia sẻ link hiện ảnh + tiêu đề đẹp -->
+<meta property="og:title" content="Vân Anh &amp; Hoài Nam">
+<meta property="og:description" content="Trân trọng kính mời bạn đến chung vui cùng chúng mình">
+<!-- TODO(bạn): thay bằng link ảnh bìa thật để hiện khi share link trên Zalo/Facebook -->
+<meta property="og:image" content="assets/images/hero-cover.jpg">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Canvas hiệu ứng cánh hoa rơi & hạt kim tuyến lấp lánh -->
+<canvas id="petal-canvas"></canvas>
+
+<!-- ============ MÀN HÌNH MỞ THIỆP ============ -->
+<div id="envelope-screen" class="envelope-screen">
+  <div class="envelope-card">
+    <div class="envelope-stamp">
+      <svg viewBox="0 0 100 100" class="seal-svg">
+        <circle cx="50" cy="50" r="45" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <circle cx="50" cy="50" r="38" fill="rgba(212,175,55,0.08)" stroke="#D4AF37" stroke-width="1"/>
+        <text x="50" y="56" text-anchor="middle" font-family="'Great Vibes', cursive" font-size="30" fill="#D4AF37">V&N</text>
+      </svg>
+    </div>
+    <h1 class="envelope-names">
+      <span class="envelope-name-line">Vân Anh</span>
+      <span class="amp-script envelope-amp">&amp;</span>
+      <span class="envelope-name-line">Hoài Nam</span>
+    </h1>
+    <p class="envelope-subtitle">Từ Giảng Đường Đến Lễ Đường</p>
+    <div class="envelope-divider"><span>✦</span></div>
+    <p class="envelope-date">31 · 12 · 2026</p>
+    <button id="open-invitation-btn" class="btn-open">
+      <span class="btn-open-text">Mở Thiệp Mời</span>
+      <span class="btn-open-sparkle">✨</span>
+    </button>
+  </div>
+</div>
+
+<!-- ============ NÚT NHẠC NỀN ============ -->
+<button id="music-toggle" class="music-toggle" aria-label="Bật/tắt nhạc nền">
+  <span class="music-icon">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 18V6l10-2v12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="1.6"/>
+      <circle cx="16" cy="16" r="3" stroke="currentColor" stroke-width="1.6"/>
+    </svg>
+  </span>
+  <span class="music-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+</button>
+<!-- TODO(bạn): upload file nhạc vào assets/audio/background-music.mp3, không cần sửa gì thêm -->
+<audio id="bg-audio" loop preload="none">
+  <source src="assets/audio/background-music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ============ NAVBAR ============ -->
+<nav id="navbar" class="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">
+      <span class="logo-script">Vân Anh</span>
+      <span class="logo-amp">❤</span>
+      <span class="logo-script">Hoài Nam</span>
+    </a>
+    <button id="nav-toggle" class="nav-toggle" aria-label="Mở menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul id="nav-menu" class="nav-menu">
+      <li><a href="#story" class="nav-link">Chuyện tình yêu</a></li>
+      <li><a href="#invite" class="nav-link">Lời mời</a></li>
+      <li><a href="#event" class="nav-link">Sự kiện</a></li>
+      <li><a href="#album" class="nav-link">Album</a></li>
+      <li><a href="#rsvp" class="nav-link">Lời chúc</a></li>
+      <li><a href="#gift" class="nav-link">Mừng cưới</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ============ 1. HERO (THIẾT KẾ THEO MẪU REFERENCE) ============ -->
+  <section id="hero" class="hero hero-split">
+    <div class="hero-text-col">
+      <div class="hero-text-inner">
+        <div class="hero-monogram-stamp">
+          <svg viewBox="0 0 100 100" class="monogram-svg">
+            <circle cx="50" cy="50" r="45" fill="none" stroke="#C6A468" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <circle cx="50" cy="50" r="38" fill="rgba(198,164,104,0.08)" stroke="#C6A468" stroke-width="1"/>
+            <text x="50" y="57" text-anchor="middle" font-family="'Great Vibes', cursive" font-size="28" fill="#B38843">V&amp;N</text>
+          </svg>
+        </div>
+        <h3 class="hero-wedding-script">The Wedding</h3>
+        <h1 class="hero-couple-names">
+          <span class="hero-name">Vân Anh</span>
+          <span class="hero-amp-red">&amp;</span>
+          <span class="hero-name">Hoài Nam</span>
+        </h1>
+        <p class="hero-date-line">31 · 12 · 2026 · CHỦ NHẬT</p>
+      </div>
+      <a href="#story" class="hero-scroll-left" aria-label="Cuộn xuống xem thêm">
+        <span class="scroll-line"></span>
+        <small>CUỘN XUỐNG</small>
+      </a>
+    </div>
+
+    <div class="hero-media-col">
+      <!-- TODO(bạn): thay ảnh bìa chính tại đây -->
+      <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600&auto=format&fit=crop" alt="Vân Anh và Hoài Nam" id="hero-img">
+    </div>
+  </section>
+
+  <!-- ============ 2. LỜI MỞ ĐẦU ============ -->
+  <section id="intro" class="section intro-section">
+    <div class="container-narrow">
+      <p class="section-eyebrow">2019 → 2026</p>
+      <p class="intro-text">
+        Có những cuộc gặp gỡ ban đầu tưởng như rất bình thường.
+        Cho đến một ngày nhìn lại, mới nhận ra người ấy đã ở bên mình
+        qua gần cả một quãng thanh xuân.
+      </p>
+      <div class="intro-divider"><span></span></div>
+    </div>
+  </section>
+
+  <!-- ============ 3. TIMELINE 3 CHƯƠNG ============ -->
+  <section id="story" class="section story-section">
+    <div class="container">
+      <p class="section-eyebrow">Chuyện của chúng mình</p>
+      <h2 class="section-title">Từ hai người bạn cùng lớp<br>đến một mái nhà</h2>
+
+      <div class="timeline">
+
+        <!-- Chương 1 -->
+        <article class="timeline-item">
+          <div class="timeline-marker"><span>01</span></div>
+          <div class="timeline-media story-media-stack" data-chapter="1" data-chapter-title="Chương 1 — Chúng mình từng là bạn thân" data-chapter-range="09.2019 — 07.07.2020">
+            <div class="stack-badge">
+              <span class="badge-sparkle">✦</span>
+              <span>4 khoảnh khắc · Click xem</span>
+            </div>
+            <div class="stack-cards">
+              <div class="stack-card is-active" data-caption="Những buổi tập văn nghệ &amp; những chuyến xe bus cùng nhau thời sinh viên">
+                <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1000&auto=format&fit=crop" alt="Chương 1 - Bạn thân 1" loading="lazy">
+              </div>
+              <div class="stack-card" data-caption="Những ca làm thêm muộn và khoảnh khắc bình dị tuổi trẻ">
+                <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=1000&auto=format&fit=crop" alt="Chương 1 - Bạn thân 2" loading="lazy">
+              </div>
+              <div class="stack-card" data-caption="Những buổi ôn thi miệt mài ở thư viện &amp; giảng đường K64">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1000&auto=format&fit=crop" alt="Chương 1 - Bạn thân 3" loading="lazy">
+              </div>
+              <div class="stack-card" data-caption="07.07.2020 — Tình bạn bước sang một chặng đường đặc biệt mới">
+                <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=1000&auto=format&fit=crop" alt="Chương 1 - Bạn thân 4" loading="lazy">
+              </div>
+            </div>
+            <div class="stack-controls">
+              <button class="stack-btn stack-prev" aria-label="Ảnh trước">‹</button>
+              <div class="stack-dots"></div>
+              <button class="stack-btn stack-next" aria-label="Ảnh sau">›</button>
+            </div>
+          </div>
+          <div class="timeline-text">
+            <p class="timeline-range">09.2019 — 07.07.2020</p>
+            <h3>Chương 1 — Chúng mình từng là bạn thân</h3>
+            <p>Tháng 9/2019, Vân Anh và Hoài Nam quen nhau khi cùng bắt đầu những năm tháng sinh viên tại lớp K64 Vật lí chuẩn, Khoa Vật lí – Trường Đại học Khoa học Tự nhiên, ĐHQGHN.</p>
+            <p>Từ những ngày đầu năm nhất, chúng mình dần bước vào cuộc sống của nhau một cách rất tự nhiên. Là những buổi tập văn nghệ, những chuyến xe bus đi học cùng nhau, những buổi ngồi ôn thi ở CK hay thư viện, những lần lang thang trên phố, những ca làm thêm muộn và rất nhiều khoảnh khắc bình dị đã góp nhặt thành những năm tháng sinh viên của chúng mình.</p>
+            <p>Chẳng có một khoảnh khắc thật sự đặc biệt để đánh dấu từ khi nào hai đứa trở nên thân thiết. Chỉ là qua những ngày rất đỗi bình thường ấy, chúng mình cứ thế gần nhau hơn, rồi dần trở thành những người luôn có mặt trong cuộc sống của nhau.</p>
+            <p>07.07.2020, tình bạn của chúng mình bước sang một chặng đường mới — gần gũi hơn, đặc biệt hơn, và cũng là khởi đầu cho hành trình sau này.</p>
+          </div>
+        </article>
+
+        <!-- Chương 2 -->
+        <article class="timeline-item timeline-item--reverse">
+          <div class="timeline-marker"><span>02</span></div>
+          <div class="timeline-media story-media-stack" data-chapter="2" data-chapter-title="Chương 2 — Chúng mình đã trưởng thành cùng nhau" data-chapter-range="2020 — 2023">
+            <div class="stack-badge">
+              <span class="badge-sparkle">✦</span>
+              <span>4 khoảnh khắc · Click xem</span>
+            </div>
+            <div class="stack-cards">
+              <div class="stack-card is-active" data-caption="Những năm tháng tuổi trẻ học tập &amp; trưởng thành bên nhau tại HoLa">
+                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1000&auto=format&fit=crop" alt="Chương 2 - Trưởng thành cùng nhau 1" loading="lazy">
+              </div>
+              <div class="stack-card" data-caption="Năm 2023 — Lễ tốt nghiệp đánh dấu một cột mốc ý nghĩa">
+                <img src="https://images.unsplash.com/photo-1535982330050-f1c2fb79ff78?q=80&w=1000&auto=format&fit=crop" alt="Chương 2 - Trưởng thành cùng nhau 2" loading="lazy">
+              </div>
+              <div class="stack-card" data-caption="Những chuyến đi cùng nhau ghi dấu tuổi trẻ đáng nhớ">
+                <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1000&auto=format&fit=crop" alt="Chương 2 - Trưởng thành cùng nhau 3" loading="lazy">
+              </div>
+              <div class="stack-card" data-caption="Song hành cùng công việc, trách nhiệm và định hướng tương lai">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1000&auto=format&fit=crop" alt="Chương 2 - Trưởng thành cùng nhau 4" loading="lazy">
+              </div>
+            </div>
+            <div class="stack-controls">
+              <button class="stack-btn stack-prev" aria-label="Ảnh trước">‹</button>
+              <div class="stack-dots"></div>
+              <button class="stack-btn stack-next" aria-label="Ảnh sau">›</button>
+            </div>
+          </div>
+          <div class="timeline-text">
+            <p class="timeline-range">2020 — 2023</p>
+            <h3>Chương 2 — Chúng mình đã trưởng thành cùng nhau</h3>
+            <p>Những năm tháng sau đó là một phần tuổi trẻ mà chúng mình may mắn có nhau. Có những ngày cùng đến trường, những kỷ niệm ở HoLa, những câu chuyện rất nhỏ của thời sinh viên và cả những tháng ngày mà sau này nhìn lại, chúng mình mới nhận ra chúng đáng nhớ đến nhường nào.</p>
+            <p>Năm 2023, chúng mình cùng tốt nghiệp. Cánh cửa đại học khép lại, một hành trình mới bắt đầu — với công việc, trách nhiệm và những dự định rõ ràng hơn cho tương lai. Thật may mắn, trong bức tranh về tương lai ấy, chúng mình vẫn luôn nhìn thấy nhau.</p>
+          </div>
+        </article>
+
+        <!-- Chương 3 -->
+        <article class="timeline-item">
+          <div class="timeline-marker"><span>03</span></div>
+          <div class="timeline-media story-media-stack" data-chapter="3" data-chapter-title="Chương 3 — Một nhà" data-chapter-range="2019 — 2026">
+            <div class="stack-badge">
+              <span class="badge-sparkle">✦</span>
+              <span>4 khoảnh khắc · Click xem</span>
+            </div>
+            <div class="stack-cards">
+              <div class="stack-card is-active" data-caption="Từ hai người bạn cùng lớp đến khoảnh khắc hẹn ước một đời">
+                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop" alt="Chương 3 - Một nhà 1" loading="lazy">
+              </div>
+              <div class="stack-card" data-caption="Những bức hình cưới đong đầy hạnh phúc &amp; tiếng cười">
+                <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1000&auto=format&fit=crop" alt="Chương 3 - Một nhà 2" loading="lazy">
+              </div>
+              <div class="stack-card" data-caption="Sau nhiều năm đổi thay, người duy nhất muốn ở bên vẫn là người ấy">
+                <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1000&auto=format&fit=crop" alt="Chương 3 - Một nhà 3" loading="lazy">
+              </div>
+              <div class="stack-card" data-caption="Năm 2026 — Chính thức bắt đầu hành trình xây dựng một mái nhà">
+                <img src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=80&w=1000&auto=format&fit=crop" alt="Chương 3 - Một nhà 4" loading="lazy">
+              </div>
+            </div>
+            <div class="stack-controls">
+              <button class="stack-btn stack-prev" aria-label="Ảnh trước">‹</button>
+              <div class="stack-dots"></div>
+              <button class="stack-btn stack-next" aria-label="Ảnh sau">›</button>
+            </div>
+          </div>
+          <div class="timeline-text">
+            <p class="timeline-range">2019 — 2026</p>
+            <h3>Chương 3 — Một nhà</h3>
+            <p>Từ năm 2019 đến 2026, rất nhiều điều đã thay đổi. Chúng mình đã đi từ những ngày đầu đại học đến những năm tháng trưởng thành, từ hai người bạn cùng lớp đến những người hiểu nhau đủ nhiều để cùng nghĩ về một cuộc sống chung.</p>
+            <p>Có lẽ tình yêu không phải lúc nào cũng nằm trong những khoảnh khắc thật lớn lao. Đôi khi, nó chỉ là việc sau rất nhiều năm, giữa những thay đổi của cuộc sống, vẫn có một người mà mình muốn kể mọi chuyện, vẫn có một người mà khi nghĩ về tương lai, mình tự nhiên đặt họ ở trong đó.</p>
+            <p>Năm 2026, chúng mình quyết định bước sang một chương mới. Không còn là câu chuyện của hai người bạn cùng lớp. Không chỉ là câu chuyện của hai người yêu nhau. Mà là câu chuyện của hai người chọn cùng nhau xây dựng một mái nhà.</p>
+          </div>
+        </article>
+
+      </div>
+
+      <p class="story-signature">Vân Anh &amp; Hoài Nam<br><span>Từ giảng đường đến lễ đường</span></p>
+    </div>
+  </section>
+
+  <!-- ============ 4. LỜI MỜI ============ -->
+  <section id="invite" class="section invite-section">
+    <div class="invite-media">
+      <!-- TODO(bạn): thay ảnh phần Lời mời -->
+      <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=1200&auto=format&fit=crop" alt="Lời mời cưới">
+    </div>
+    <div class="invite-card">
+      <p class="invite-eyebrow">Trân trọng kính mời</p>
+      <p class="invite-body">
+        Đến chung vui và chứng kiến khoảnh khắc chúng mình
+        chính thức bắt đầu một hành trình mới.
+      </p>
+      <h2 class="invite-names">Vân Anh <span class="amp">&amp;</span> Hoài Nam</h2>
+      <p class="invite-savedate">
+        SAVE THE DATE<br>
+        <!-- TODO(bạn): điền ngày cưới chính thức -->
+        <strong>___ / ___ / 2026</strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 5+6+7. SỰ KIỆN CƯỚI (NHÀ TRAI & NHÀ GÁI) ============ -->
+  <section id="event" class="section event-section">
+    <div class="container">
+      <div class="event-header-row">
+        <h2 class="event-section-title">SỰ KIỆN CƯỚI ✦</h2>
+        <div class="event-header-line"></div>
+      </div>
+
+      <!-- Đếm ngược -->
+      <div class="countdown" id="countdown">
+        <div class="countdown-item"><span class="countdown-number" id="cd-days">--</span><span class="countdown-label">Ngày</span></div>
+        <div class="countdown-item"><span class="countdown-number" id="cd-hours">--</span><span class="countdown-label">Giờ</span></div>
+        <div class="countdown-item"><span class="countdown-number" id="cd-minutes">--</span><span class="countdown-label">Phút</span></div>
+        <div class="countdown-item"><span class="countdown-number" id="cd-seconds">--</span><span class="countdown-label">Giây</span></div>
+      </div>
+
+      <!-- Grid 2 Khối: Nhà Trai & Nhà Gái -->
+      <div class="event-family-grid">
+        <!-- NHÀ TRAI -->
+        <div class="family-event-card">
+          <div class="card-corner card-corner-tl"></div>
+          <div class="card-corner card-corner-tr"></div>
+          <div class="card-corner card-corner-bl"></div>
+          <div class="card-corner card-corner-br"></div>
+          
+          <div class="family-badge">NHÀ TRAI</div>
+          
+          <!-- TODO(bạn): thay địa chỉ Nhà Trai thật tại đây -->
+          <p class="family-address">Thôn Quang Minh, Xã Kiến Xương, Tỉnh Hưng Yên</p>
+          
+          <!-- TODO(bạn): dán link Google Maps Nhà Trai vào href="..." bên dưới -->
+          <a href="https://www.google.com/maps" target="_blank" rel="noopener" class="map-link-btn">XEM BẢN ĐỒ &rarr;</a>
+          
+          <div class="family-card-divider"></div>
+          
+          <div class="family-sub-event">
+            <h3 class="event-name">Tiệc Cưới Nhà Trai</h3>
+            <p class="event-date-time">THỨ BẢY · 19.09.2026 · 16:00</p>
+          </div>
+          
+          <div class="family-sub-event">
+            <h3 class="event-name">Lễ Thành Hôn</h3>
+            <p class="event-date-time">CHỦ NHẬT · 20.09.2026 · 13:30</p>
+          </div>
+        </div>
+
+        <!-- NHÀ GÁI -->
+        <div class="family-event-card">
+          <div class="card-corner card-corner-tl"></div>
+          <div class="card-corner card-corner-tr"></div>
+          <div class="card-corner card-corner-bl"></div>
+          <div class="card-corner card-corner-br"></div>
+          
+          <div class="family-badge">NHÀ GÁI</div>
+          
+          <!-- TODO(bạn): thay địa chỉ Nhà Gái thật tại đây -->
+          <p class="family-address">Thôn Cao Mại, Xã Bình Thanh, Tỉnh Hưng Yên</p>
+          
+          <!-- TODO(bạn): dán link Google Maps Nhà Gái vào href="..." bên dưới -->
+          <a href="https://www.google.com/maps" target="_blank" rel="noopener" class="map-link-btn">XEM BẢN ĐỒ &rarr;</a>
+          
+          <div class="family-card-divider"></div>
+          
+          <div class="family-sub-event">
+            <h3 class="event-name">Tiệc Cưới Nhà Gái</h3>
+            <p class="event-date-time">CHỦ NHẬT · 20.09.2026 · 10:00</p>
+          </div>
+          
+          <div class="family-sub-event">
+            <h3 class="event-name">Lễ Vu Quy</h3>
+            <p class="event-date-time">CHỦ NHẬT · 20.09.2026 · 12:30</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lịch trình ngày cưới -->
+      <div class="schedule">
+        <h3 class="event-card-title">Lịch trình ngày cưới</h3>
+        <ul class="schedule-list">
+          <li><span class="schedule-time">16:00</span><span class="schedule-dot"></span><span class="schedule-desc">Đón khách &amp; Chụp ảnh check-in</span></li>
+          <li><span class="schedule-time">18:00</span><span class="schedule-dot"></span><span class="schedule-desc">Làm lễ cưới chính thức</span></li>
+          <li><span class="schedule-time">18:30</span><span class="schedule-dot"></span><span class="schedule-desc">Khai tiệc mừng cưới</span></li>
+          <li><span class="schedule-time">20:30</span><span class="schedule-dot"></span><span class="schedule-desc">Giao lưu &amp; Kết thúc</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 8. ALBUM ẢNH ============ -->
+  <section id="album" class="section album-section">
+    <div class="container">
+      <p class="section-eyebrow">Khoảnh khắc</p>
+      <h2 class="section-title">Album ảnh cưới</h2>
+
+      <!-- Album Category Filter Tabs -->
+      <div class="album-filter-tabs">
+        <button class="album-filter-btn active" data-filter="all">Tất cả</button>
+        <button class="album-filter-btn" data-filter="prewedding">Pre-wedding</button>
+        <button class="album-filter-btn" data-filter="doithuong">Đời thường</button>
+        <button class="album-filter-btn" data-filter="tieccuoi">Lễ cưới</button>
+      </div>
+
+      <div class="album-grid" id="album-grid">
+        <div class="album-item" data-category="prewedding"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&auto=format&fit=crop" alt="Pre-wedding 1" loading="lazy"></div>
+        <div class="album-item" data-category="doithuong"><img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=800&auto=format&fit=crop" alt="Đời thường 1" loading="lazy"></div>
+        <div class="album-item" data-category="prewedding"><img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800&auto=format&fit=crop" alt="Pre-wedding 2" loading="lazy"></div>
+        <div class="album-item" data-category="tieccuoi"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop" alt="Lễ cưới 1" loading="lazy"></div>
+        <div class="album-item" data-category="doithuong"><img src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=80&w=800&auto=format&fit=crop" alt="Đời thường 2" loading="lazy"></div>
+        <div class="album-item" data-category="prewedding"><img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=800&auto=format&fit=crop" alt="Pre-wedding 3" loading="lazy"></div>
+        <div class="album-item" data-category="tieccuoi"><img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=800&auto=format&fit=crop" alt="Lễ cưới 2" loading="lazy"></div>
+        <div class="album-item" data-category="doithuong"><img src="https://images.unsplash.com/photo-1502635385003-ee1e6a1a742d?q=80&w=800&auto=format&fit=crop" alt="Đời thường 3" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox cho album -->
+  <div id="lightbox" class="lightbox">
+    <button id="lightbox-close" class="lightbox-close" aria-label="Đóng">&times;</button>
+    <button id="lightbox-prev" class="lightbox-nav lightbox-prev" aria-label="Ảnh trước">&#8249;</button>
+    <img id="lightbox-img" src="" alt="">
+    <button id="lightbox-next" class="lightbox-nav lightbox-next" aria-label="Ảnh sau">&#8250;</button>
+  </div>
+
+  <!-- Modal Xem Album Chuyện Chúng Mình -->
+  <div id="story-modal" class="story-modal" role="dialog" aria-modal="true" aria-label="Xem ảnh chuyện chúng mình">
+    <div class="story-modal-backdrop"></div>
+    <div class="story-modal-card">
+      <button id="story-modal-close" class="story-modal-close" aria-label="Đóng">&times;</button>
+      
+      <div class="story-modal-header">
+        <span class="story-modal-range" id="story-modal-range">2019 — 2026</span>
+        <h3 class="story-modal-title" id="story-modal-title">Chương 1 — Chúng mình từng là bạn thân</h3>
+      </div>
+      
+      <div class="story-modal-view">
+        <button id="story-modal-prev" class="story-modal-arrow story-modal-prev" aria-label="Ảnh trước">&#8249;</button>
+        
+        <div class="story-modal-media-wrap">
+          <img id="story-modal-img" src="" alt="">
+          <div class="story-modal-info">
+            <span class="story-modal-counter" id="story-modal-counter">1 / 4</span>
+            <p class="story-modal-caption" id="story-modal-caption"></p>
+          </div>
+        </div>
+        
+        <button id="story-modal-next" class="story-modal-arrow story-modal-next" aria-label="Ảnh sau">&#8250;</button>
+      </div>
+
+      <div class="story-modal-thumbs" id="story-modal-thumbs">
+        <!-- JS sẽ inject thumbnails vào đây -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 9. RSVP ============ -->
+  <section id="rsvp" class="section rsvp-section">
+    <div class="container-narrow">
+      <p class="section-eyebrow">Xác nhận tham dự</p>
+      <h2 class="section-title">Bạn sẽ đến chứ?</h2>
+      <p class="rsvp-intro">Sự hiện diện của bạn sẽ khiến ngày vui của chúng mình trở nên trọn vẹn hơn.</p>
+
+      <form id="rsvp-form" class="rsvp-form">
+        <div class="form-row">
+          <label for="rsvp-name">Họ và tên</label>
+          <input type="text" id="rsvp-name" name="rsvp-name" placeholder="Nhập họ và tên của bạn" required>
+        </div>
+
+        <div class="form-row">
+          <label for="rsvp-attend">Bạn sẽ tham dự chứ?</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="rsvp-attend" value="Có, mình sẽ đến" checked>
+              <span>Có, mình sẽ đến</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="rsvp-attend" value="Rất tiếc, mình không tham dự được">
+              <span>Rất tiếc, mình không tham dự được</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="rsvp-guests">Số người tham dự</label>
+          <select id="rsvp-guests" name="rsvp-guests">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5+">5+</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="rsvp-message">Lời nhắn cho Vân Anh &amp; Hoài Nam</label>
+          <textarea id="rsvp-message" name="rsvp-message" rows="3" placeholder="Gửi lời chúc của bạn..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" id="rsvp-submit-btn">
+          <span class="btn-submit-text">Xác nhận tham dự</span>
+          <span class="btn-submit-loading">Đang gửi...</span>
+        </button>
+
+        <p id="rsvp-status" class="rsvp-status" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ 10. MỪNG CƯỚI ============ -->
+  <section id="gift" class="section gift-section">
+    <div class="container-narrow">
+      <p class="section-eyebrow">Mừng cưới</p>
+      <h2 class="section-title">Gửi lời chúc đến chúng mình</h2>
+      <p class="gift-intro">Nếu bạn muốn gửi tặng chúng mình một chút quà mừng, đây là thông tin chuyển khoản.</p>
+
+      <div class="gift-tabs">
+        <button class="gift-tab active" data-target="gift-bride">🌸 Cô dâu Vân Anh</button>
+        <button class="gift-tab" data-target="gift-groom">🤵 Chú rể Hoài Nam</button>
+      </div>
+
+      <div class="gift-card-wrap">
+        <div class="gift-panel active" id="gift-bride">
+          <div class="gift-qr">
+            <!-- TODO(bạn): thay ảnh QR chuyển khoản của Vân Anh -->
+            <img src="assets/images/qr-bank.png" alt="QR chuyển khoản Vân Anh" onerror="this.style.display='none'">
+          </div>
+          <p class="gift-bank-name">Tên ngân hàng</p>
+          <p class="gift-account-name">NGUYỄN VÂN ANH</p>
+          <div class="gift-account-row">
+            <span class="gift-account-number" id="acc-bride">0000 000 000</span>
+            <button class="btn-copy" data-copy="0000000000">📋 Sao chép STK</button>
+          </div>
+        </div>
+
+        <div class="gift-panel" id="gift-groom">
+          <div class="gift-qr">
+            <!-- TODO(bạn): thay ảnh QR chuyển khoản của Hoài Nam -->
+            <img src="assets/images/qr-bank.png" alt="QR chuyển khoản Hoài Nam" onerror="this.style.display='none'">
+          </div>
+          <p class="gift-bank-name">Tên ngân hàng</p>
+          <p class="gift-account-name">TRẦN HOÀI NAM</p>
+          <div class="gift-account-row">
+            <span class="gift-account-number" id="acc-groom">0000 000 000</span>
+            <button class="btn-copy" data-copy="0000000000">📋 Sao chép STK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Toast thông báo đã sao chép -->
+  <div id="toast" class="toast">Đã sao chép số tài khoản! ✨</div>
+
+  <!-- ============ 11. LỜI CẢM ƠN (KHUNG THIỆP SANG TRỌNG) ============ -->
+  <section id="thanks" class="thanks-section">
+    <div class="container-narrow">
+      <div class="thanks-card">
+        <div class="card-corner card-corner-tl"></div>
+        <div class="card-corner card-corner-tr"></div>
+        <div class="card-corner card-corner-bl"></div>
+        <div class="card-corner card-corner-br"></div>
+
+        <div class="thanks-seal">
+          <svg viewBox="0 0 100 100" class="seal-svg">
+            <circle cx="50" cy="50" r="45" fill="none" stroke="#C6A468" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <circle cx="50" cy="50" r="38" fill="rgba(198,164,104,0.08)" stroke="#C6A468" stroke-width="1"/>
+            <text x="50" y="57" text-anchor="middle" font-family="'Great Vibes', cursive" font-size="28" fill="#B38843">V&amp;N</text>
+          </svg>
+        </div>
+
+        <p class="thanks-eyebrow">THANK YOU</p>
+
+        <p class="thanks-text">
+          Cảm ơn bạn đã dành thời gian cùng chúng mình đi qua những dòng chữ này.<br>
+          Với chúng mình, được thấy bạn trong ngày ấy đã là một điều trọn&nbsp;vẹn.
+        </p>
+
+        <div class="thanks-divider">
+          <span></span>
+          <i class="ornament-heart">❤</i>
+          <span></span>
+        </div>
+
+        <h2 class="thanks-names">Vân Anh <span class="thanks-amp">&amp;</span> Hoài Nam</h2>
+        <p class="thanks-date">31 · 12 · 2026</p>
+        <p class="thanks-tagline">Our story continues ✨</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
