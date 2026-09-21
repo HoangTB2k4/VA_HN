@@ -3,29 +3,10 @@
    ========================================================= */
 
 /* ---------------------------------------------------------
-   CẤU HÌNH — BẠN CHỈ CẦN SỬA Ở ĐÂY
+   CẤU HÌNH NGÀY CƯỚI CHÍNH THỨC
    --------------------------------------------------------- */
-
-// TODO(bạn): điền ngày giờ cưới chính xác để đếm ngược chạy đúng
-// Định dạng: "YYYY-MM-DDTHH:mm:ss" theo giờ Việt Nam (+07:00)
-const WEDDING_DATETIME = "2026-12-31T17:00:00+07:00";
-
-// TODO(bạn): cấu hình Google Form ẩn cho RSVP
-// Cách lấy:
-// 1. Tạo 1 Google Form với các câu hỏi: Họ tên / Bạn có tham dự? / Số người / Lời nhắn
-// 2. Mở Form ở chế độ xem trước (Preview) > bấm chuột phải > "Xem nguồn trang" (View Page Source)
-//    hoặc dùng DevTools (F12) > tìm các thẻ <input> có "name=entry.xxxxxxx"
-// 3. Lấy link submit: thay "viewform" trong link Form bằng "formResponse"
-//    Ví dụ: https://docs.google.com/forms/d/e/XXXXXXXXX/formResponse
-const GOOGLE_FORM_CONFIG = {
-  formActionUrl: "https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse", // TODO(bạn)
-  entryIds: {
-    name: "entry.111111111",      // TODO(bạn): entry ID của câu "Họ và tên"
-    attend: "entry.222222222",    // TODO(bạn): entry ID của câu "Bạn có tham dự?"
-    guests: "entry.333333333",    // TODO(bạn): entry ID của câu "Số người tham dự"
-    message: "entry.444444444"    // TODO(bạn): entry ID của câu "Lời nhắn"
-  }
-};
+// Ngày cưới chính thức: 04.10.2026 13:30
+const WEDDING_DATETIME = "2026-10-04T13:30:00+07:00";
 
 /* ---------------------------------------------------------
    0. HIỆU ỨNG CÁNH HOA RƠI & KIM TUYẾN LẤP LÁNH (PETAL CANVAS)
@@ -60,7 +41,6 @@ const GOOGLE_FORM_CONFIG = {
       this.angle = Math.random() * Math.PI * 2;
       this.spin = (Math.random() - 0.5) * 0.02;
       this.opacity = Math.random() * 0.6 + 0.35;
-      // Soft rose & blush gold colors
       const colors = [
         'rgba(242, 190, 199, ',
         'rgba(235, 178, 178, ',
@@ -84,7 +64,6 @@ const GOOGLE_FORM_CONFIG = {
       ctx.rotate(this.angle);
       ctx.fillStyle = this.colorBase + this.opacity + ')';
       ctx.beginPath();
-      // Draw petal shape
       ctx.moveTo(0, 0);
       ctx.bezierCurveTo(-this.size / 2, -this.size / 2, -this.size, this.size / 3, 0, this.size);
       ctx.bezierCurveTo(this.size, this.size / 3, this.size / 2, -this.size / 2, 0, 0);
@@ -141,16 +120,22 @@ const GOOGLE_FORM_CONFIG = {
 (function initEnvelope() {
   const envelope = document.getElementById('envelope-screen');
   const openBtn = document.getElementById('open-invitation-btn');
+
+  // Đảm bảo khi load lại trang luôn tự động cuộn lên đầu trang
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
+
   if (!envelope || !openBtn) return;
 
   openBtn.addEventListener('click', () => {
     envelope.classList.add('is-closed');
     document.body.style.overflow = '';
-    // Thử tự phát nhạc ngay khi mở thiệp (trình duyệt có thể chặn, nút loa vẫn dùng được bình thường)
+    window.scrollTo({ top: 0, behavior: 'instant' });
     tryAutoplayMusic();
   }, { once: true });
 
-  // Khoá scroll khi màn hình mở thiệp còn hiện
   document.body.style.overflow = 'hidden';
 })();
 
@@ -171,9 +156,7 @@ function tryAutoplayMusic() {
         musicStarted = true;
         musicToggle.classList.add('is-playing');
       })
-      .catch(() => {
-        // Trình duyệt chặn autoplay — người dùng sẽ tự bấm nút loa
-      });
+      .catch(() => {});
   }
 }
 
@@ -185,7 +168,7 @@ if (musicToggle && bgAudio) {
         musicStarted = true;
         musicToggle.classList.add('is-playing');
       }).catch(() => {
-        console.warn('Không thể phát nhạc — kiểm tra file assets/audio/background-music.mp3 đã được upload chưa.');
+        console.warn('Không thể phát nhạc — kiểm tra file assets/audio/background-music.mp3');
       });
     } else {
       bgAudio.pause();
@@ -195,7 +178,7 @@ if (musicToggle && bgAudio) {
 }
 
 /* ---------------------------------------------------------
-   3. NAVBAR: đổi nền khi cuộn + menu mobile
+   3. NAVBAR
    --------------------------------------------------------- */
 (function initNavbar() {
   const navbar = document.getElementById('navbar');
@@ -203,9 +186,16 @@ if (musicToggle && bgAudio) {
   const navMenu = document.getElementById('nav-menu');
   if (!navbar) return;
 
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('is-scrolled', window.scrollY > 40);
-  }, { passive: true });
+  function updateNavbar() {
+    if (window.scrollY > 100) {
+      navbar.classList.add('is-scrolled');
+    } else {
+      navbar.classList.remove('is-scrolled');
+    }
+  }
+
+  window.addEventListener('scroll', updateNavbar, { passive: true });
+  updateNavbar();
 
   if (navToggle && navMenu) {
     navToggle.addEventListener('click', () => {
@@ -214,7 +204,6 @@ if (musicToggle && bgAudio) {
       navToggle.setAttribute('aria-expanded', String(isOpen));
     });
 
-    // Đóng menu khi bấm 1 link
     navMenu.querySelectorAll('.nav-link').forEach((link) => {
       link.addEventListener('click', () => {
         navMenu.classList.remove('is-open');
@@ -276,7 +265,7 @@ if (musicToggle && bgAudio) {
 })();
 
 /* ---------------------------------------------------------
-   4B. BỘ ẢNH TƯƠNG TÁC & STORY LIGHTBOX MODAL (CHUYỆN CHÚNG MÌNH)
+   4B. BỘ ẢNH TƯƠNG TÁC & STORY LIGHTBOX MODAL
    --------------------------------------------------------- */
 (function initStoryPhotoStackAndModal() {
   const stacks = document.querySelectorAll('.story-media-stack');
@@ -297,7 +286,6 @@ if (musicToggle && bgAudio) {
   let currentImageData = [];
   let currentModalIndex = 0;
 
-  // 1. Khởi tạo từng bộ ảnh stack trong Timeline
   stacks.forEach((stack) => {
     const cards = Array.from(stack.querySelectorAll('.stack-card'));
     const dotsContainer = stack.querySelector('.stack-dots');
@@ -307,7 +295,6 @@ if (musicToggle && bgAudio) {
 
     if (!cards.length) return;
 
-    // Tạo chấm điều hướng dots dựa trên số lượng ảnh
     if (dotsContainer) {
       dotsContainer.innerHTML = '';
       cards.forEach((_, idx) => {
@@ -355,15 +342,12 @@ if (musicToggle && bgAudio) {
       });
     }
 
-    // Bấm vào vùng ảnh / badge để mở Story Lightbox Modal
     stack.addEventListener('click', (e) => {
-      // Nếu không bấm vào nút prev/next/dot thì mở modal
       if (e.target.closest('.stack-btn') || e.target.closest('.stack-dot')) return;
       openModal(stack, cardIndex);
     });
   });
 
-  // 2. Mở Story Lightbox Modal
   function openModal(stackEl, startIndex = 0) {
     const chapterTitle = stackEl.dataset.chapterTitle || 'Chuyện chúng mình';
     const chapterRange = stackEl.dataset.chapterRange || '';
@@ -371,10 +355,12 @@ if (musicToggle && bgAudio) {
 
     currentImageData = cards.map((card) => {
       const img = card.querySelector('img');
+      const fallback = img ? img.getAttribute('onerror') : '';
       return {
         src: img ? img.src : '',
         alt: img ? img.alt : '',
-        caption: card.dataset.caption || img.alt || ''
+        caption: card.dataset.caption || img.alt || '',
+        onerror: fallback
       };
     });
 
@@ -384,13 +370,12 @@ if (musicToggle && bgAudio) {
     modalTitle.textContent = chapterTitle;
     currentModalIndex = startIndex;
 
-    // Render danh sách Thumbnails
     if (modalThumbs) {
       modalThumbs.innerHTML = '';
       currentImageData.forEach((item, idx) => {
         const thumb = document.createElement('div');
         thumb.className = `story-thumb ${idx === currentModalIndex ? 'is-active' : ''}`;
-        thumb.innerHTML = `<img src="${item.src}" alt="${item.alt}">`;
+        thumb.innerHTML = `<img src="${item.src}" alt="${item.alt}" ${item.onerror ? `onerror="${item.onerror}"` : ''}>`;
         thumb.addEventListener('click', () => updateModalImage(idx));
         modalThumbs.appendChild(thumb);
       });
@@ -406,6 +391,11 @@ if (musicToggle && bgAudio) {
     const current = currentImageData[currentModalIndex];
 
     modalImg.style.opacity = '0.3';
+    if (current.onerror) {
+      modalImg.setAttribute('onerror', current.onerror);
+    } else {
+      modalImg.removeAttribute('onerror');
+    }
     setTimeout(() => {
       modalImg.src = current.src;
       modalImg.alt = current.alt;
@@ -413,7 +403,7 @@ if (musicToggle && bgAudio) {
     }, 120);
 
     modalCounter.textContent = `${currentModalIndex + 1} / ${currentImageData.length}`;
-    modalCaption.textContent = current.caption;
+    if (modalCaption) modalCaption.textContent = '';
 
     if (modalThumbs) {
       const thumbs = modalThumbs.querySelectorAll('.story-thumb');
@@ -438,43 +428,98 @@ if (musicToggle && bgAudio) {
     if (e.key === 'ArrowLeft') updateModalImage(currentModalIndex - 1);
     if (e.key === 'ArrowRight') updateModalImage(currentModalIndex + 1);
   });
-
-  // Hỗ trợ vuốt (swipe) cảm ứng trên di động
-  let touchStartX = 0;
-  let touchEndX = 0;
-  modal.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-  }, { passive: true });
-
-  modal.addEventListener('touchend', (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    if (touchStartX - touchEndX > 50) {
-      updateModalImage(currentModalIndex + 1); // Swipe Left -> Next
-    } else if (touchEndX - touchStartX > 50) {
-      updateModalImage(currentModalIndex - 1); // Swipe Right -> Prev
-    }
-  }, { passive: true });
 })();
 
 /* ---------------------------------------------------------
-   5. ALBUM LIGHTBOX
+   4C. XEM THÊM / THU GỌN NỘI DUNG CÂU CHUYỆN (STORY TOGGLE)
    --------------------------------------------------------- */
-(function initLightbox() {
+(function initStoryTextToggle() {
+  const toggleBtns = document.querySelectorAll('.btn-story-toggle');
+  toggleBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const box = btn.closest('.story-content-box');
+      if (!box) return;
+      const textBody = box.querySelector('.story-text-body');
+      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+
+      if (isExpanded) {
+        textBody.classList.add('collapsed');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.querySelector('.toggle-text').textContent = 'Xem thêm';
+        btn.querySelector('.toggle-icon').textContent = '↓';
+      } else {
+        textBody.classList.remove('collapsed');
+        btn.setAttribute('aria-expanded', 'true');
+        btn.querySelector('.toggle-text').textContent = 'Thu gọn';
+        btn.querySelector('.toggle-icon').textContent = '↓';
+      }
+    });
+  });
+})();
+
+/* ---------------------------------------------------------
+   5. ALBUM SLIDER CAROUSEL (4 ÁNH 1 LƯỢT & LIGHTBOX)
+   --------------------------------------------------------- */
+(function initAlbumCarousel() {
   const grid = document.getElementById('album-grid');
+  const btnPrev = document.getElementById('album-carousel-prev');
+  const btnNext = document.getElementById('album-carousel-next');
+  const dotsContainer = document.getElementById('album-pagination-dots');
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
-  const btnClose = document.getElementById('lightbox-close');
-  const btnPrev = document.getElementById('lightbox-prev');
-  const btnNext = document.getElementById('lightbox-next');
-  if (!grid || !lightbox) return;
+  const lbClose = document.getElementById('lightbox-close');
+  const lbPrev = document.getElementById('lightbox-prev');
+  const lbNext = document.getElementById('lightbox-next');
 
-  const items = Array.from(grid.querySelectorAll('.album-item img'));
-  let currentIndex = 0;
+  if (!grid) return;
+
+  const items = Array.from(grid.querySelectorAll('.album-item'));
+  let currentPage = 0;
+  const itemsPerPage = 4;
+  const totalPages = Math.ceil(items.length / itemsPerPage);
+
+  function renderPage(page) {
+    currentPage = (page + totalPages) % totalPages;
+    items.forEach((item, index) => {
+      if (index >= currentPage * itemsPerPage && index < (currentPage + 1) * itemsPerPage) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+
+    if (dotsContainer) {
+      const dots = dotsContainer.querySelectorAll('.album-dot');
+      dots.forEach((d, i) => d.classList.toggle('active', i === currentPage));
+    }
+  }
+
+  // Khởi tạo Dots
+  if (dotsContainer && totalPages > 1) {
+    dotsContainer.innerHTML = '';
+    for (let i = 0; i < totalPages; i++) {
+      const dot = document.createElement('button');
+      dot.className = `album-dot ${i === 0 ? 'active' : ''}`;
+      dot.setAttribute('aria-label', `Trang album ${i + 1}`);
+      dot.addEventListener('click', () => renderPage(i));
+      dotsContainer.appendChild(dot);
+    }
+  }
+
+  if (btnPrev) btnPrev.addEventListener('click', () => renderPage(currentPage - 1));
+  if (btnNext) btnNext.addEventListener('click', () => renderPage(currentPage + 1));
+
+  renderPage(0);
+
+  // Lightbox functionality
+  let currentLightboxIndex = 0;
 
   function openLightbox(index) {
-    currentIndex = index;
-    lightboxImg.src = items[currentIndex].src;
-    lightboxImg.alt = items[currentIndex].alt;
+    currentLightboxIndex = index;
+    const img = items[currentLightboxIndex].querySelector('img');
+    if (!img) return;
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
     lightbox.classList.add('is-open');
     document.body.style.overflow = 'hidden';
   }
@@ -484,137 +529,113 @@ if (musicToggle && bgAudio) {
     document.body.style.overflow = '';
   }
 
-  function showRelative(delta) {
-    currentIndex = (currentIndex + delta + items.length) % items.length;
-    lightboxImg.src = items[currentIndex].src;
-    lightboxImg.alt = items[currentIndex].alt;
+  function showLightboxRelative(delta) {
+    currentLightboxIndex = (currentLightboxIndex + delta + items.length) % items.length;
+    const img = items[currentLightboxIndex].querySelector('img');
+    if (img) {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+    }
   }
 
-  items.forEach((img, index) => {
-    img.parentElement.addEventListener('click', () => openLightbox(index));
+  items.forEach((item, index) => {
+    item.addEventListener('click', () => openLightbox(index));
   });
 
-  btnClose.addEventListener('click', closeLightbox);
-  btnPrev.addEventListener('click', () => showRelative(-1));
-  btnNext.addEventListener('click', () => showRelative(1));
+  if (lbClose) lbClose.addEventListener('click', closeLightbox);
+  if (lbPrev) lbPrev.addEventListener('click', () => showLightboxRelative(-1));
+  if (lbNext) lbNext.addEventListener('click', () => showLightboxRelative(1));
 
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) closeLightbox();
-  });
+  if (lightbox) {
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+  }
 
   document.addEventListener('keydown', (e) => {
-    if (!lightbox.classList.contains('is-open')) return;
+    if (!lightbox || !lightbox.classList.contains('is-open')) return;
     if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') showRelative(-1);
-    if (e.key === 'ArrowRight') showRelative(1);
+    if (e.key === 'ArrowLeft') showLightboxRelative(-1);
+    if (e.key === 'ArrowRight') showLightboxRelative(1);
   });
 })();
 
 /* ---------------------------------------------------------
-   5B. ALBUM CATEGORY FILTER TABS
+   6. BANK STK POPUP MODAL (ẤN CÔ DÂU HOẶC CHÚ RỂ RỒI HIỆN POPUP)
    --------------------------------------------------------- */
-(function initAlbumFilter() {
-  const filterBtns = document.querySelectorAll('.album-filter-btn');
-  const albumItems = document.querySelectorAll('.album-item');
-  if (!filterBtns.length) return;
+(function initBankModal() {
+  const modal = document.getElementById('bank-modal');
+  const triggers = document.querySelectorAll('.gift-card-trigger');
+  const closeBtn = document.getElementById('bank-modal-close');
+  const panelBride = document.getElementById('bank-panel-bride');
+  const panelGroom = document.getElementById('bank-panel-groom');
+  if (!modal || !triggers.length) return;
 
-  filterBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
+  const backdrop = modal.querySelector('.bank-modal-backdrop');
 
-      const filter = btn.dataset.filter;
-      albumItems.forEach((item) => {
-        if (filter === 'all' || item.dataset.category === filter) {
-          item.style.display = 'block';
-        } else {
-          item.style.display = 'none';
-        }
-      });
-    });
-  });
-})();
-
-/* ---------------------------------------------------------
-   6. GIFT TABS (Vân Anh / Hoài Nam)
-   --------------------------------------------------------- */
-(function initGiftTabs() {
-  const tabs = document.querySelectorAll('.gift-tab');
-  const panels = document.querySelectorAll('.gift-panel');
-  if (!tabs.length) return;
-
-  tabs.forEach((tab) => {
-    tab.addEventListener('click', () => {
-      tabs.forEach((t) => t.classList.remove('active'));
-      panels.forEach((p) => p.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById(tab.dataset.target).classList.add('active');
-    });
-  });
-})();
-
-/* ---------------------------------------------------------
-   7. RSVP FORM — GỬI NGẦM VÀO GOOGLE FORM
-   --------------------------------------------------------- */
-(function initRsvpForm() {
-  const form = document.getElementById('rsvp-form');
-  const submitBtn = document.getElementById('rsvp-submit-btn');
-  const statusEl = document.getElementById('rsvp-status');
-  if (!form) return;
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const name = document.getElementById('rsvp-name').value.trim();
-    const attend = form.querySelector('input[name="rsvp-attend"]:checked').value;
-    const guests = document.getElementById('rsvp-guests').value;
-    const message = document.getElementById('rsvp-message').value.trim();
-
-    if (!name) {
-      statusEl.textContent = 'Bạn vui lòng nhập họ tên nhé.';
-      statusEl.className = 'rsvp-status error';
-      return;
+  function openBankModal(person) {
+    if (person === 'bride') {
+      if (panelBride) panelBride.classList.add('active');
+      if (panelGroom) panelGroom.classList.remove('active');
+    } else {
+      if (panelGroom) panelGroom.classList.add('active');
+      if (panelBride) panelBride.classList.remove('active');
     }
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
 
-    submitBtn.classList.add('is-loading');
-    submitBtn.disabled = true;
+  function closeBankModal() {
+    modal.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
 
-    const formData = new FormData();
-    formData.append(GOOGLE_FORM_CONFIG.entryIds.name, name);
-    formData.append(GOOGLE_FORM_CONFIG.entryIds.attend, attend);
-    formData.append(GOOGLE_FORM_CONFIG.entryIds.guests, guests);
-    formData.append(GOOGLE_FORM_CONFIG.entryIds.message, message);
+  triggers.forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      const person = trigger.getAttribute('data-person');
+      openBankModal(person);
+    });
+  });
 
-    // Google Form không cho phép đọc phản hồi qua fetch (CORS bị chặn có chủ đích),
-    // nên ta dùng mode: 'no-cors' — gửi thành công nhưng không đọc được response.
-    // Vì vậy ta luôn hiển thị thông báo thành công sau khi request được gửi đi.
-    fetch(GOOGLE_FORM_CONFIG.formActionUrl, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: formData
-    })
-      .then(() => {
-        statusEl.textContent = 'Cảm ơn bạn! Chúng mình đã nhận được xác nhận của bạn.';
-        statusEl.className = 'rsvp-status success';
-        form.reset();
-      })
-      .catch(() => {
-        statusEl.textContent = 'Có lỗi khi gửi, bạn vui lòng thử lại giúp mình nhé.';
-        statusEl.className = 'rsvp-status error';
-      })
-      .finally(() => {
-        submitBtn.classList.remove('is-loading');
-        submitBtn.disabled = false;
-      });
+  if (closeBtn) closeBtn.addEventListener('click', closeBankModal);
+  if (backdrop) backdrop.addEventListener('click', closeBankModal);
+
+  document.addEventListener('keydown', (e) => {
+    if (modal.classList.contains('is-open') && e.key === 'Escape') {
+      closeBankModal();
+    }
   });
 })();
 
 /* ---------------------------------------------------------
-   8. FADE-IN KHI CUỘN (một hiệu ứng nhẹ, dùng chung)
+   7. SAO CHÉP SỐ TÀI KHOẢN (COPY STK TO CLIPBOARD)
+   --------------------------------------------------------- */
+(function initCopyStk() {
+  const copyBtns = document.querySelectorAll('.btn-copy');
+  const toast = document.getElementById('toast');
+  if (!copyBtns.length) return;
+
+  copyBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const textToCopy = btn.getAttribute('data-copy') || '0000000000';
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        if (toast) {
+          toast.classList.add('show');
+          setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+      }).catch((err) => {
+        console.error('Không thể sao chép: ', err);
+      });
+    });
+  });
+})();
+
+/* ---------------------------------------------------------
+   8. FADE-IN KHI CUỘN
    --------------------------------------------------------- */
 (function initScrollReveal() {
   const revealTargets = document.querySelectorAll(
-    '.timeline-item, .event-card, .schedule, .album-item, .countdown-item'
+    '.timeline-item, .family-event-card, .album-item, .countdown-item, .gift-card-trigger'
   );
   if (!revealTargets.length || !('IntersectionObserver' in window)) return;
 
@@ -638,46 +659,4 @@ if (musicToggle && bgAudio) {
   );
 
   revealTargets.forEach((el) => observer.observe(el));
-})();
-
-/* ---------------------------------------------------------
-   9. SAO CHÉP SỐ TÀI KHOẢN (COPY STK TO CLIPBOARD)
-   --------------------------------------------------------- */
-(function initCopyStk() {
-  const copyBtns = document.querySelectorAll('.btn-copy');
-  const toast = document.getElementById('toast');
-  if (!copyBtns.length) return;
-
-  copyBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const textToCopy = btn.getAttribute('data-copy') || '0000000000';
-      navigator.clipboard.writeText(textToCopy).then(() => {
-        if (toast) {
-          toast.classList.add('show');
-          setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-      }).catch((err) => {
-        console.error('Không thể sao chép: ', err);
-      });
-    });
-  });
-})();
-
-/* ---------------------------------------------------------
-   10. CHỈ HIỆN NAVBAR KHI CUỘN XUỐNG CÁC TRANG DƯỚI
-   --------------------------------------------------------- */
-(function initNavbarScroll() {
-  const navbar = document.getElementById('navbar');
-  if (!navbar) return;
-
-  function updateNavbar() {
-    if (window.scrollY > 100) {
-      navbar.classList.add('is-scrolled');
-    } else {
-      navbar.classList.remove('is-scrolled');
-    }
-  }
-
-  window.addEventListener('scroll', updateNavbar, { passive: true });
-  updateNavbar();
 })();
