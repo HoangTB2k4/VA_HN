@@ -124,13 +124,10 @@ if ('scrollRestoration' in history) {
 }
 window.scrollTo(0, 0);
 
-const bgAudio = document.getElementById('bg-audio');
+// Tạo Audio object động (KHÔNG dùng thẻ <audio> trong HTML)
+// → Trình duyệt không thể restore/autoplay từ session cache
+let bgAudio = null;
 const musicToggle = document.getElementById('music-toggle');
-
-// Mặc định: nhạc TẮT, icon hiển thị trạng thái dừng
-if (musicToggle) {
-  musicToggle.classList.remove('is-playing');
-}
 
 function updateMusicUI(isPlaying) {
   if (!musicToggle) return;
@@ -141,22 +138,33 @@ function updateMusicUI(isPlaying) {
   }
 }
 
+function getOrCreateAudio() {
+  if (!bgAudio) {
+    bgAudio = new Audio('assets/audio/vay-cuoi.mp3');
+    bgAudio.loop = true;
+    bgAudio.volume = 0.55;
+    bgAudio.preload = 'none';
+    // Khi nhạc kết thúc (phòng trường hợp loop bị lỗi)
+    bgAudio.addEventListener('ended', () => updateMusicUI(false));
+  }
+  return bgAudio;
+}
+
 // Nút biểu tượng âm nhạc: Chỉ bấm vào icon mới phát / tắt nhạc
-if (musicToggle && bgAudio) {
+if (musicToggle) {
   musicToggle.addEventListener('click', (e) => {
     e.stopPropagation();
-    if (bgAudio.paused) {
+    const audio = getOrCreateAudio();
+    if (audio.paused) {
       // Đang tắt -> Bật nhạc
-      bgAudio.volume = 0.55;
-      bgAudio.loop = true;
-      bgAudio.play().then(() => {
+      audio.play().then(() => {
         updateMusicUI(true);
       }).catch(() => {
         updateMusicUI(false);
       });
     } else {
       // Đang phát -> Tắt nhạc
-      bgAudio.pause();
+      audio.pause();
       updateMusicUI(false);
     }
   });
