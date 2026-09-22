@@ -126,43 +126,50 @@ window.scrollTo(0, 0);
 
 const bgAudio = document.getElementById('bg-audio');
 const musicToggle = document.getElementById('music-toggle');
-let musicStarted = false;
+let isUserPaused = false; // Chỉ dừng phát nhạc khi người dùng chủ động bấm nút tắt
 
-function tryAutoplayMusic() {
-  if (!bgAudio || musicStarted) return;
+function startMusic() {
+  if (!bgAudio || isUserPaused) return;
   bgAudio.volume = 0.55;
+  
   const playPromise = bgAudio.play();
   if (playPromise !== undefined) {
-    playPromise
-      .then(() => {
-        musicStarted = true;
-        if (musicToggle) musicToggle.classList.add('is-playing');
-      })
-      .catch(() => {});
+    playPromise.then(() => {
+      if (musicToggle) musicToggle.classList.add('is-playing');
+    }).catch(() => {
+      // Tiếp tục tự động kích hoạt ở cử chỉ đầu tiên nếu bị trình duyệt giữ lại
+    });
   }
 }
 
-// Thử tự động phát nhạc ngay khi load trang
-tryAutoplayMusic();
-document.addEventListener('DOMContentLoaded', tryAutoplayMusic);
-window.addEventListener('load', tryAutoplayMusic);
+// 1. Tự động phát nhạc ngay khi load trang
+startMusic();
+document.addEventListener('DOMContentLoaded', startMusic);
+window.addEventListener('load', startMusic);
+window.addEventListener('pageshow', startMusic);
 
-// Lắng nghe mọi tương tác đầu tiên (chạm, cuộn, click, di chuột) để đảm bảo nhạc phát ngay khi mở
-['pointerdown', 'touchstart', 'scroll', 'click', 'mousemove', 'keydown'].forEach(evt => {
-  window.addEventListener(evt, tryAutoplayMusic, { once: true, passive: true });
+// 2. Tự động kích hoạt phát nhạc ở mọi thao tác mở/chạm/cuộn đầu tiên
+const autoUnlockEvents = ['pointerdown', 'touchstart', 'touchend', 'scroll', 'click', 'mousemove', 'keydown', 'visibilitychange'];
+autoUnlockEvents.forEach(evt => {
+  window.addEventListener(evt, () => {
+    if (bgAudio && bgAudio.paused && !isUserPaused) {
+      startMusic();
+    }
+  }, { passive: true });
 });
 
+// 3. Nút âm nhạc: Chỉ tắt nhạc khi người dùng chạm/bấm trực tiếp vào nút này
 if (musicToggle && bgAudio) {
-  musicToggle.addEventListener('click', () => {
+  musicToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
     if (bgAudio.paused) {
+      isUserPaused = false;
       bgAudio.volume = 0.55;
       bgAudio.play().then(() => {
-        musicStarted = true;
         musicToggle.classList.add('is-playing');
-      }).catch(() => {
-        console.warn('Không thể phát nhạc — kiểm tra file mp3');
-      });
+      }).catch(err => console.warn(err));
     } else {
+      isUserPaused = true;
       bgAudio.pause();
       musicToggle.classList.remove('is-playing');
     }
