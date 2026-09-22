@@ -137,37 +137,37 @@ function startMusic() {
     playPromise.then(() => {
       if (musicToggle) musicToggle.classList.add('is-playing');
     }).catch(() => {
-      // Tiếp tục tự động kích hoạt ở cử chỉ đầu tiên nếu bị trình duyệt giữ lại
+      if (musicToggle) musicToggle.classList.remove('is-playing');
     });
   }
 }
 
-// 1. Tự động phát nhạc ngay khi load trang
+// 1. Thử tự động phát nhạc ngay khi load trang
 startMusic();
 document.addEventListener('DOMContentLoaded', startMusic);
 window.addEventListener('load', startMusic);
 window.addEventListener('pageshow', startMusic);
 
-// 2. Tự động kích hoạt phát nhạc ở mọi thao tác mở/chạm/cuộn đầu tiên
-const autoUnlockEvents = ['pointerdown', 'touchstart', 'touchend', 'scroll', 'click', 'mousemove', 'keydown', 'visibilitychange'];
+// 2. Tự động phát nhạc ngay khi chạm/click/cuộn bất kỳ đâu trên màn hình
+const unlockAudioOnUserAction = () => {
+  if (isUserPaused) return;
+  if (bgAudio && bgAudio.paused) {
+    startMusic();
+  }
+};
+
+const autoUnlockEvents = ['pointerdown', 'touchstart', 'touchend', 'click', 'scroll', 'keydown'];
 autoUnlockEvents.forEach(evt => {
-  window.addEventListener(evt, () => {
-    if (bgAudio && bgAudio.paused && !isUserPaused) {
-      startMusic();
-    }
-  }, { passive: true });
+  window.addEventListener(evt, unlockAudioOnUserAction, { passive: true });
 });
 
-// 3. Nút âm nhạc: Chỉ tắt nhạc khi người dùng chạm/bấm trực tiếp vào nút này
+// 3. Nút biểu tượng âm nhạc: Bấm/chạm trực tiếp vào nút để Bật hoặc Tắt nhạc
 if (musicToggle && bgAudio) {
   musicToggle.addEventListener('click', (e) => {
     e.stopPropagation();
     if (bgAudio.paused) {
       isUserPaused = false;
-      bgAudio.volume = 0.55;
-      bgAudio.play().then(() => {
-        musicToggle.classList.add('is-playing');
-      }).catch(err => console.warn(err));
+      startMusic();
     } else {
       isUserPaused = true;
       bgAudio.pause();
