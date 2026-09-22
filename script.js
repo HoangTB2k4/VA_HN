@@ -117,33 +117,13 @@ const WEDDING_DATETIME = "2026-10-04T13:30:00+07:00";
 })();
 
 /* ---------------------------------------------------------
-   1. MÀN HÌNH MỞ THIỆP
+   1. KHỞI TẠO TRANG & NHẠC NỀN
    --------------------------------------------------------- */
-(function initEnvelope() {
-  const envelope = document.getElementById('envelope-screen');
-  const openBtn = document.getElementById('open-invitation-btn');
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
 
-  // Đảm bảo khi load lại trang luôn tự động cuộn lên đầu trang
-  if ('scrollRestoration' in history) {
-    history.scrollRestoration = 'manual';
-  }
-  window.scrollTo(0, 0);
-
-  if (!envelope || !openBtn) return;
-
-  openBtn.addEventListener('click', () => {
-    envelope.classList.add('is-closed');
-    document.body.style.overflow = '';
-    window.scrollTo({ top: 0, behavior: 'instant' });
-    tryAutoplayMusic();
-  }, { once: true });
-
-  document.body.style.overflow = 'hidden';
-})();
-
-/* ---------------------------------------------------------
-   2. NHẠC NỀN
-   --------------------------------------------------------- */
 const bgAudio = document.getElementById('bg-audio');
 const musicToggle = document.getElementById('music-toggle');
 let musicStarted = false;
@@ -156,11 +136,15 @@ function tryAutoplayMusic() {
     playPromise
       .then(() => {
         musicStarted = true;
-        musicToggle.classList.add('is-playing');
+        if (musicToggle) musicToggle.classList.add('is-playing');
       })
       .catch(() => {});
   }
 }
+
+// Thử tự động phát nhạc khi người dùng tương tác lần đầu với trang
+document.addEventListener('click', tryAutoplayMusic, { once: true });
+document.addEventListener('touchstart', tryAutoplayMusic, { once: true });
 
 if (musicToggle && bgAudio) {
   musicToggle.addEventListener('click', () => {
@@ -170,7 +154,7 @@ if (musicToggle && bgAudio) {
         musicStarted = true;
         musicToggle.classList.add('is-playing');
       }).catch(() => {
-        console.warn('Không thể phát nhạc — kiểm tra file assets/audio/background-music.mp3');
+        console.warn('Không thể phát nhạc — kiểm tra file mp3');
       });
     } else {
       bgAudio.pause();

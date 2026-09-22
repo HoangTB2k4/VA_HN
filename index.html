@@ -42,61 +42,7 @@
 <!-- Canvas hiệu ứng cánh hoa rơi & hạt kim tuyến lấp lánh -->
 <canvas id="petal-canvas"></canvas>
 
-<!-- ============ MÀN HÌNH MỞ THIỆP ============ -->
-<div id="envelope-screen" class="envelope-screen">
-  <div class="envelope-glow-bg"></div>
-  <div class="envelope-card">
-    <div class="envelope-corner envelope-corner-tl"></div>
-    <div class="envelope-corner envelope-corner-tr"></div>
-    <div class="envelope-corner envelope-corner-bl"></div>
-    <div class="envelope-corner envelope-corner-br"></div>
 
-    <div class="envelope-badge"><span>✦ WEDDING INVITATION ✦</span></div>
-
-    <div class="envelope-stamp">
-      <svg viewBox="0 0 100 100" class="seal-svg" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="gold-seal-grad-env" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#F9EBCE"/>
-            <stop offset="40%" stop-color="#D4AF37"/>
-            <stop offset="80%" stop-color="#99742E"/>
-            <stop offset="100%" stop-color="#6E501A"/>
-          </linearGradient>
-        </defs>
-        <circle cx="50" cy="50" r="47" fill="#FFFDF8" stroke="url(#gold-seal-grad-env)" stroke-width="1.8"/>
-        <circle cx="50" cy="50" r="42" fill="none" stroke="url(#gold-seal-grad-env)" stroke-width="0.9" stroke-dasharray="3 2"/>
-        <circle cx="50" cy="50" r="38" fill="rgba(212, 175, 55, 0.08)"/>
-        <text x="50" y="52" text-anchor="middle" dominant-baseline="central">
-          <tspan font-family="'Cormorant Garamond', 'Playfair Display', serif" font-size="24" font-weight="700" fill="#6E501A" letter-spacing="1">N</tspan>
-          <tspan font-family="'Great Vibes', cursive" font-size="22" font-weight="normal" fill="#B83232" dx="2" dy="-1">&amp;</tspan>
-          <tspan font-family="'Cormorant Garamond', 'Playfair Display', serif" font-size="24" font-weight="700" fill="#6E501A" letter-spacing="1" dx="2" dy="1">A</tspan>
-        </text>
-      </svg>
-    </div>
-
-    <h1 class="envelope-names">
-      <span class="envelope-name-line">Vân Anh</span>
-      <span class="amp-script envelope-amp">&amp;</span>
-      <span class="envelope-name-line">Hoài Nam</span>
-    </h1>
-
-    <p class="envelope-subtitle">Từ Giảng Đường Đến Lễ Đường</p>
-    
-    <div class="envelope-divider">
-      <span class="divider-line"></span>
-      <span class="divider-icon">✦</span>
-      <span class="divider-line"></span>
-    </div>
-
-    <p class="envelope-date">CHỦ NHẬT · 04 · 10 · 2026</p>
-
-    <button id="open-invitation-btn" class="btn-open">
-      <span class="btn-open-sparkle-left">✨</span>
-      <span class="btn-open-text">Mở Thiệp Mời</span>
-      <span class="btn-open-sparkle">✨</span>
-    </button>
-  </div>
-</div>
 
 <!-- ============ NÚT NHẠC NỀN ============ -->
 <button id="music-toggle" class="music-toggle" aria-label="Bật/tắt nhạc nền">
