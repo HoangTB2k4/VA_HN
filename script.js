@@ -126,24 +126,14 @@ window.scrollTo(0, 0);
 
 const bgAudio = document.getElementById('bg-audio');
 const musicToggle = document.getElementById('music-toggle');
-const musicTooltip = document.getElementById('music-tooltip');
 let isUserPaused = false; // Chỉ dừng phát nhạc khi người dùng chủ động bấm nút tắt
 
 function updateMusicUI(isPlaying) {
   if (!musicToggle) return;
   if (isPlaying) {
     musicToggle.classList.add('is-playing');
-    musicToggle.classList.remove('needs-tap');
-    if (musicTooltip) musicTooltip.classList.add('is-hidden');
   } else {
     musicToggle.classList.remove('is-playing');
-    if (!isUserPaused) {
-      musicToggle.classList.add('needs-tap');
-      if (musicTooltip) musicTooltip.classList.remove('is-hidden');
-    } else {
-      musicToggle.classList.remove('needs-tap');
-      if (musicTooltip) musicTooltip.classList.add('is-hidden');
-    }
   }
 }
 
@@ -155,16 +145,14 @@ function startMusic() {
   if (playPromise !== undefined) {
     playPromise.then(() => {
       updateMusicUI(true);
-      removeAudioUnlockListeners();
     }).catch(() => {
-      // Browser blocked autoplay on mobile/desktop without interaction
       updateMusicUI(false);
     });
   }
 }
 
-// 2. Mở khóa âm thanh ngay lập tức khi chạm/click bất kỳ đâu trên màn hình điện thoại
-function unlockAudioOnMobileGesture() {
+// Mở khóa âm thanh ngầm mượt mà ngay khi người dùng chạm hoặc vuốt màn hình trên điện thoại
+function silentUnlockAudio() {
   if (isUserPaused || !bgAudio) return;
   if (bgAudio.paused) {
     bgAudio.volume = 0.55;
@@ -172,37 +160,24 @@ function unlockAudioOnMobileGesture() {
     if (promise !== undefined) {
       promise.then(() => {
         updateMusicUI(true);
-        removeAudioUnlockListeners();
       }).catch(() => {});
     }
   }
 }
 
-const unlockEvents = ['touchstart', 'touchend', 'pointerdown', 'mousedown', 'click', 'scroll'];
+const silentEvents = ['touchstart', 'touchend', 'touchmove', 'pointerdown', 'mousedown', 'click', 'scroll', 'pageshow'];
+silentEvents.forEach(evt => {
+  window.addEventListener(evt, silentUnlockAudio, { capture: true, passive: true });
+});
 
-function addAudioUnlockListeners() {
-  unlockEvents.forEach(evt => {
-    window.addEventListener(evt, unlockAudioOnMobileGesture, { capture: true, passive: true });
-  });
-}
-
-function removeAudioUnlockListeners() {
-  unlockEvents.forEach(evt => {
-    window.removeEventListener(evt, unlockAudioOnMobileGesture, { capture: true });
-  });
-}
-
-// Thử phát nhạc ngay khi load & đăng ký listener chờ lượt chạm đầu tiên trên điện thoại
-addAudioUnlockListeners();
+// Thử tự động phát nhạc ngay giây đầu tiên mở trang
 startMusic();
 document.addEventListener('DOMContentLoaded', startMusic);
 window.addEventListener('load', startMusic);
 window.addEventListener('pageshow', startMusic);
-
-// Hỗ trợ trình duyệt tích hợp trong app (Zalo, Facebook, Kakao)
 document.addEventListener('WeixinJSBridgeReady', startMusic, false);
 
-// 3. Nút biểu tượng âm nhạc: Bấm/chạm trực tiếp vào nút để Bật hoặc Tắt nhạc
+// Nút biểu tượng âm nhạc: Bấm/chạm trực tiếp vào icon để Bật hoặc Tắt nhạc
 if (musicToggle && bgAudio) {
   musicToggle.addEventListener('click', (e) => {
     e.stopPropagation();

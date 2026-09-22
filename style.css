@@ -331,47 +331,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 .btn-open:hover::before { left: 100%; }
 
-/* ---------- 3. MUSIC TOGGLE BUTTON & TOOLTIP ---------- */
-.music-toggle-wrapper {
+/* ---------- 3. MUSIC TOGGLE BUTTON ---------- */
+.music-toggle {
   position: fixed;
   bottom: 28px;
   right: 28px;
   z-index: 500;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.music-tooltip {
-  background: rgba(35, 28, 22, 0.88);
-  color: #FFFDF8;
-  font-size: 0.8rem;
-  font-weight: 500;
-  padding: 7px 15px;
-  border-radius: 20px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  white-space: nowrap;
-  pointer-events: none;
-  animation: float-tooltip 2s ease-in-out infinite alternate;
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-.music-tooltip.is-hidden {
-  opacity: 0;
-  transform: translateX(10px);
-  pointer-events: none;
-}
-
-@keyframes float-tooltip {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-4px); }
-}
-
-.music-toggle {
-  position: relative;
   width: 54px;
   height: 54px;
   border-radius: 50%;
