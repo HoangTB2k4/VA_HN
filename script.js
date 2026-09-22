@@ -127,6 +127,13 @@ window.scrollTo(0, 0);
 const bgAudio = document.getElementById('bg-audio');
 const musicToggle = document.getElementById('music-toggle');
 let isUserPaused = false; // Chỉ dừng phát nhạc khi người dùng chủ động bấm nút tắt
+let musicUnlocked = false; // Theo dõi đã unlock audio chưa
+
+// Mặc định hiển thị icon "đang phát" ngay từ đầu (dù chưa thực sự phát được)
+// vì ý định mặc định là nhạc BẬT
+if (musicToggle) {
+  musicToggle.classList.add('is-playing');
+}
 
 function updateMusicUI(isPlaying) {
   if (!musicToggle) return;
@@ -140,25 +147,31 @@ function updateMusicUI(isPlaying) {
 function startMusic() {
   if (!bgAudio || isUserPaused) return;
   bgAudio.volume = 0.55;
+  bgAudio.loop = true;
   
   const playPromise = bgAudio.play();
   if (playPromise !== undefined) {
     playPromise.then(() => {
+      musicUnlocked = true;
       updateMusicUI(true);
     }).catch(() => {
-      updateMusicUI(false);
+      // Trình duyệt chặn autoplay — icon vẫn hiện "đang phát"
+      // Nhạc sẽ tự bật khi người dùng tương tác lần đầu
+      updateMusicUI(true);
     });
   }
 }
 
-// Mở khóa âm thanh ngầm mượt mà ngay khi người dùng chạm hoặc vuốt màn hình trên điện thoại
+// Mở khóa âm thanh ngầm mượt mà ngay khi người dùng chạm hoặc vuốt màn hình lần đầu
 function silentUnlockAudio() {
   if (isUserPaused || !bgAudio) return;
   if (bgAudio.paused) {
     bgAudio.volume = 0.55;
+    bgAudio.loop = true;
     const promise = bgAudio.play();
     if (promise !== undefined) {
       promise.then(() => {
+        musicUnlocked = true;
         updateMusicUI(true);
       }).catch(() => {});
     }
@@ -177,14 +190,16 @@ window.addEventListener('load', startMusic);
 window.addEventListener('pageshow', startMusic);
 document.addEventListener('WeixinJSBridgeReady', startMusic, false);
 
-// Nút biểu tượng âm nhạc: Bấm/chạm trực tiếp vào icon để Bật hoặc Tắt nhạc
+// Nút biểu tượng âm nhạc: Bấm vào icon để Tắt hoặc Bật nhạc
 if (musicToggle && bgAudio) {
   musicToggle.addEventListener('click', (e) => {
     e.stopPropagation();
     if (bgAudio.paused) {
+      // Đang tắt -> Bật nhạc
       isUserPaused = false;
       startMusic();
     } else {
+      // Đang phát -> Tắt nhạc
       isUserPaused = true;
       bgAudio.pause();
       updateMusicUI(false);
