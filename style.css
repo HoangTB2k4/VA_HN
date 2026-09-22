@@ -25,11 +25,12 @@ html { scroll-behavior: smooth; }
   --color-white:       #FFFFFF;
 
   /* Type */
-  --font-display: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
-  --font-serif-alt: 'Lora', serif;
-  --font-body: 'Be Vietnam Pro', sans-serif;
-  --font-script: 'Great Vibes', cursive;
-  --font-accent: 'Alex Brush', cursive;
+  --font-modern-serif: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  --font-display: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+  --font-serif-alt: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+  --font-body: 'Be Vietnam Pro', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-script: 'Great Vibes', 'Snell Roundhand', 'Brush Script MT', cursive;
+  --font-accent: 'Great Vibes', 'Snell Roundhand', 'Brush Script MT', cursive;
 
   /* Layout */
   --container-max: 1120px;
@@ -57,8 +58,8 @@ body {
 }
 
 h1, h2, h3 {
-  font-family: var(--font-display);
-  font-weight: 500;
+  font-family: var(--font-modern-serif);
+  font-weight: 400;
   margin: 0;
   color: var(--color-ink);
   letter-spacing: normal;
@@ -89,16 +90,16 @@ section.section { padding: 96px 0; }
 
 .section-eyebrow {
   font-family: var(--font-body);
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-gold-dark);
-  font-weight: 600;
-  margin-bottom: 10px;
+  color: #8C6A2E;
+  font-weight: 500;
+  margin-bottom: 6px;
   text-align: center;
 }
 .section-eyebrow-script {
-  font-family: 'Great Vibes', 'Alex Brush', cursive;
+  font-family: var(--font-script);
   font-size: clamp(2.3rem, 4.5vw, 3.2rem);
   color: #9E7432;
   font-weight: 400;
@@ -109,12 +110,12 @@ section.section { padding: 96px 0; }
   text-transform: none;
 }
 .section-title {
-  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
-  font-size: clamp(1.8rem, 3.8vw, 2.4rem);
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.2vw, 2.15rem);
+  font-weight: 400;
   color: #231C16;
   text-align: center;
-  margin-bottom: 36px;
+  margin-bottom: 28px;
   line-height: 1.3;
   letter-spacing: normal;
   text-wrap: balance;
@@ -234,7 +235,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .envelope-names {
-  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  font-family: var(--font-display);
   font-weight: 600;
   letter-spacing: normal;
   color: #231C16;
@@ -425,7 +426,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .logo-script {
   font-family: var(--font-display);
   font-size: 1.35rem;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.03em;
 }
 .logo-amp {
@@ -558,7 +559,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .hero-wedding-script {
-  font-family: 'Great Vibes', 'Alex Brush', cursive;
+  font-family: var(--font-script);
   font-size: clamp(3.2rem, 5.5vw, 4.4rem);
   color: #9E7432;
   font-weight: normal;
@@ -592,7 +593,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .hero-couple-names {
-  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  font-family: var(--font-display);
   font-size: clamp(3rem, 6.2vw, 4.6rem);
   color: #231C16;
   line-height: 1.18;
@@ -600,20 +601,19 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  font-weight: 600;
+  font-weight: 400;
   margin-bottom: 32px;
 }
 
 .hero-name {
   letter-spacing: 0.01em;
-  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-weight: 400;
   color: #231C16;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.03);
 }
 
 .hero-amp-red {
-  font-family: 'Great Vibes', cursive;
+  font-family: var(--font-script);
   font-size: 2.6rem;
   color: #A83232;
   line-height: 0.9;
@@ -622,7 +622,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .hero-date-line {
-  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  font-family: var(--font-display);
   font-size: clamp(0.95rem, 2vw, 1.15rem);
   letter-spacing: 0.08em;
   color: #5C4B38;
@@ -2093,7 +2093,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .thanks-text {
-  font-family: 'Cormorant Garamond', 'Lora', Georgia, serif;
+  font-family: var(--font-display);
   font-size: clamp(1.2rem, 2.8vw, 1.55rem);
   line-height: 1.85;
   color: #38302A;
@@ -2131,10 +2131,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .thanks-names {
-  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  font-family: var(--font-display);
   font-size: clamp(2.4rem, 5.5vw, 3.6rem);
   color: #2B241F;
-  font-weight: 600;
+  font-weight: 400;
   margin-bottom: 12px;
   letter-spacing: 0.01em;
 }
@@ -2156,7 +2156,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .thanks-tagline {
-  font-family: 'Great Vibes', 'Alex Brush', cursive;
+  font-family: var(--font-script);
   font-size: 1.8rem;
   color: #8C6A2E;
   font-weight: 400;
@@ -2175,8 +2175,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 /* Countdown Section */
 .countdown-section {
   background: radial-gradient(circle at center, #FFFFFF 0%, #FAF6F0 100%);
-  padding: 80px 0;
+  padding: 44px 0 48px;
   border-bottom: 1px solid var(--color-line);
+}
+.countdown-section .section-title {
+  margin-bottom: 24px;
 }
 .countdown-subtext {
   color: var(--color-ink-soft);
@@ -2201,12 +2204,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   align-items: center;
 }
 .countdown-number {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-family: var(--font-body);
+  font-size: clamp(2.2rem, 4.8vw, 3.2rem);
   font-weight: 700;
-  color: var(--color-olive-dark);
+  color: #3D4A35;
   line-height: 1;
   margin-bottom: 6px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
 }
 .countdown-label {
   font-size: 0.8rem;
@@ -2378,7 +2383,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   background: #FAF7F2;
   border: 1.5px solid var(--color-gold-light);
   border-radius: var(--radius-lg);
-  padding: 32px 24px;
+  padding: 28px 24px;
   text-align: center;
   cursor: pointer;
   transition: all 0.35s ease;
@@ -2394,20 +2399,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   font-size: 2.5rem;
   margin-bottom: 12px;
 }
-.gift-trigger-title {
-  font-size: 0.82rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--color-gold-dark);
-  font-weight: 600;
-  margin-bottom: 4px;
-}
 .gift-trigger-name {
   font-family: var(--font-display);
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: var(--color-ink);
   font-weight: 600;
-  margin-bottom: 16px;
+  margin-bottom: 0;
 }
 .gift-trigger-btn {
   display: inline-block;

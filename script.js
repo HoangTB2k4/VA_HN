@@ -142,9 +142,15 @@ function tryAutoplayMusic() {
   }
 }
 
-// Thử tự động phát nhạc khi người dùng tương tác lần đầu với trang
-document.addEventListener('click', tryAutoplayMusic, { once: true });
-document.addEventListener('touchstart', tryAutoplayMusic, { once: true });
+// Thử tự động phát nhạc ngay khi load trang
+tryAutoplayMusic();
+document.addEventListener('DOMContentLoaded', tryAutoplayMusic);
+window.addEventListener('load', tryAutoplayMusic);
+
+// Lắng nghe mọi tương tác đầu tiên (chạm, cuộn, click, di chuột) để đảm bảo nhạc phát ngay khi mở
+['pointerdown', 'touchstart', 'scroll', 'click', 'mousemove', 'keydown'].forEach(evt => {
+  window.addEventListener(evt, tryAutoplayMusic, { once: true, passive: true });
+});
 
 if (musicToggle && bgAudio) {
   musicToggle.addEventListener('click', () => {
