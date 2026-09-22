@@ -104,11 +104,13 @@ const WEDDING_DATETIME = "2026-10-04T13:30:00+07:00";
   for (let i = 0; i < TOTAL_SPARKLES; i++) petals.push(new Sparkle());
 
   function animate() {
-    ctx.clearRect(0, 0, width, height);
-    petals.forEach(p => {
-      p.update();
-      p.draw();
-    });
+    if (!document.hidden) {
+      ctx.clearRect(0, 0, width, height);
+      petals.forEach(p => {
+        p.update();
+        p.draw();
+      });
+    }
     requestAnimationFrame(animate);
   }
   animate();
@@ -478,15 +480,31 @@ if (musicToggle && bgAudio) {
   const itemsPerPage = 4;
   const totalPages = Math.ceil(items.length / itemsPerPage);
 
+  function loadItemImage(img) {
+    if (!img) return;
+    if (img.dataset.src && (!img.getAttribute('src') || img.src === window.location.href)) {
+      img.src = img.dataset.src;
+    }
+  }
+
   function renderPage(page) {
     currentPage = (page + totalPages) % totalPages;
     items.forEach((item, index) => {
+      const img = item.querySelector('img');
       if (index >= currentPage * itemsPerPage && index < (currentPage + 1) * itemsPerPage) {
         item.style.display = 'block';
+        if (img) loadItemImage(img);
       } else {
         item.style.display = 'none';
       }
     });
+
+    // Preload next page in background
+    const nextPage = (currentPage + 1) % totalPages;
+    for (let i = nextPage * itemsPerPage; i < (nextPage + 1) * itemsPerPage && i < items.length; i++) {
+      const nextImg = items[i].querySelector('img');
+      if (nextImg) loadItemImage(nextImg);
+    }
 
     if (dotsContainer) {
       const dots = dotsContainer.querySelectorAll('.album-dot');
@@ -518,7 +536,8 @@ if (musicToggle && bgAudio) {
     currentLightboxIndex = index;
     const img = items[currentLightboxIndex].querySelector('img');
     if (!img) return;
-    lightboxImg.src = img.src;
+    loadItemImage(img);
+    lightboxImg.src = img.dataset.full || img.src || img.dataset.src;
     lightboxImg.alt = img.alt;
     lightbox.classList.add('is-open');
     document.body.style.overflow = 'hidden';
@@ -533,7 +552,8 @@ if (musicToggle && bgAudio) {
     currentLightboxIndex = (currentLightboxIndex + delta + items.length) % items.length;
     const img = items[currentLightboxIndex].querySelector('img');
     if (img) {
-      lightboxImg.src = img.src;
+      loadItemImage(img);
+      lightboxImg.src = img.dataset.full || img.src || img.dataset.src;
       lightboxImg.alt = img.alt;
     }
   }

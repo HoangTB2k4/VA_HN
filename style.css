@@ -430,13 +430,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 .logo-amp {
   font-family: var(--font-body);
-  font-size: 1.05rem;
-  color: #C6A468;
+  font-size: 1.15rem;
+  color: #D32F2F;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   margin: 0 5px;
-  filter: drop-shadow(0 1px 4px rgba(198, 164, 104, 0.4));
+  filter: drop-shadow(0 1px 4px rgba(211, 47, 47, 0.4));
   transition: transform 0.3s ease, color 0.3s ease;
 }
 .nav-logo:hover .logo-amp {
@@ -1510,8 +1510,25 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   text-transform: uppercase;
   color: #7C694F;
   font-weight: 700;
-  margin-bottom: 22px;
+  margin-bottom: 18px;
   text-align: center;
+}
+
+.family-person-img {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto 18px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid rgba(198, 164, 104, 0.4);
+  box-shadow: 0 8px 24px rgba(43, 38, 32, 0.08);
+  background: #FFFDF9;
+}
+.family-person-img img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
 }
 
 .family-address {
@@ -1669,13 +1686,17 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   overflow: hidden;
   border-radius: var(--radius-md);
   cursor: pointer;
-  aspect-ratio: 1;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  aspect-ratio: 3 / 4;
+  box-shadow: 0 8px 24px rgba(43, 38, 32, 0.08);
+  background: #FAF8F5;
+  border: 1px solid rgba(198, 164, 104, 0.3);
 }
-.album-item:nth-child(5n+1) { grid-row: span 2; aspect-ratio: 1/2.05; }
 .album-item img {
-  width: 100%; height: 100%; object-fit: cover;
-  transition: transform 0.6s ease;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1);
 }
 .album-item::after {
   content: '🔍';
@@ -1698,7 +1719,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 @media (max-width: 560px) {
   .album-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .album-item:nth-child(5n+1) { grid-row: span 1; aspect-ratio: 1; }
 }
 
 .lightbox {
@@ -1886,16 +1906,26 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .gift-panel { display: none; }
 .gift-panel.active { display: block; animation: envelope-pop 0.4s ease both; }
 .gift-qr {
-  width: 210px; height: 210px;
-  margin: 0 auto 24px;
-  border: 1px solid var(--color-gold-light);
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto 16px;
+  border: 1px solid rgba(198, 164, 104, 0.4);
   border-radius: var(--radius-md);
   overflow: hidden;
   background: #FFFFFF;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
 }
-.gift-qr img { width: 100%; height: 100%; object-fit: contain; }
+.gift-qr img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  image-rendering: -webkit-optimize-contrast;
+}
 .gift-bank-name { color: var(--color-gold-dark); font-size: 0.95rem; margin-bottom: 4px; font-weight: 600; }
 .gift-account-name { font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 12px; font-weight: 600; }
 .gift-account-row {
@@ -2357,9 +2387,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .bank-modal-card {
   position: relative;
   background: #FFFFFF;
-  width: min(92vw, 440px);
+  width: min(92vw, 460px);
+  max-height: 90vh;
+  overflow-y: auto;
   border-radius: var(--radius-lg);
-  padding: 40px 32px;
+  padding: 36px 28px 28px;
   box-shadow: 0 24px 60px rgba(0,0,0,0.3);
   border: 1px solid var(--color-gold-light);
   transform: scale(0.92) translateY(20px);
