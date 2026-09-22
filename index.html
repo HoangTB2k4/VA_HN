@@ -46,16 +46,19 @@
 
 
 <!-- ============ NÚT NHẠC NỀN ============ -->
-<button id="music-toggle" class="music-toggle" aria-label="Bật/tắt nhạc nền">
-  <span class="music-icon">
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M9 18V6l10-2v12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="1.6"/>
-      <circle cx="16" cy="16" r="3" stroke="currentColor" stroke-width="1.6"/>
-    </svg>
-  </span>
-  <span class="music-bars" aria-hidden="true"><i></i><i></i><i></i></span>
-</button>
+<div class="music-toggle-wrapper">
+  <div id="music-tooltip" class="music-tooltip">Chạm để bật nhạc 🎵</div>
+  <button id="music-toggle" class="music-toggle" aria-label="Bật/tắt nhạc nền">
+    <span class="music-icon">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 18V6l10-2v12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="1.6"/>
+        <circle cx="16" cy="16" r="3" stroke="currentColor" stroke-width="1.6"/>
+      </svg>
+    </span>
+    <span class="music-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+  </button>
+</div>
 <audio id="bg-audio" loop autoplay preload="auto" playsinline>
   <source src="assets/audio/vay-cuoi.mp3" type="audio/mpeg">
 </audio>
