@@ -418,11 +418,37 @@ if (musicToggle && bgAudio) {
     document.body.style.overflow = '';
   }
 
-  if (btnClose) btnClose.addEventListener('click', closeModal);
+  if (btnClose) btnClose.addEventListener('click', (e) => { e.stopPropagation(); closeModal(); });
   if (backdrop) backdrop.addEventListener('click', closeModal);
 
-  if (btnPrev) btnPrev.addEventListener('click', () => updateModalImage(currentModalIndex - 1));
-  if (btnNext) btnNext.addEventListener('click', () => updateModalImage(currentModalIndex + 1));
+  if (btnPrev) btnPrev.addEventListener('click', (e) => { e.stopPropagation(); updateModalImage(currentModalIndex - 1); });
+  if (btnNext) btnNext.addEventListener('click', (e) => { e.stopPropagation(); updateModalImage(currentModalIndex + 1); });
+
+  // Vuốt chuyển ảnh trên điện thoại cho Story Modal
+  let storyTouchStartX = 0;
+  let storyTouchStartY = 0;
+  if (modal) {
+    modal.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        storyTouchStartX = e.touches[0].clientX;
+        storyTouchStartY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    modal.addEventListener('touchend', (e) => {
+      if (e.changedTouches.length === 1) {
+        const deltaX = e.changedTouches[0].clientX - storyTouchStartX;
+        const deltaY = e.changedTouches[0].clientY - storyTouchStartY;
+        if (Math.abs(deltaX) > 35 && Math.abs(deltaX) > Math.abs(deltaY)) {
+          if (deltaX < 0) {
+            updateModalImage(currentModalIndex + 1);
+          } else {
+            updateModalImage(currentModalIndex - 1);
+          }
+        }
+      }
+    }, { passive: true });
+  }
 
   document.addEventListener('keydown', (e) => {
     if (!modal.classList.contains('is-open')) return;
@@ -562,11 +588,35 @@ if (musicToggle && bgAudio) {
     item.addEventListener('click', () => openLightbox(index));
   });
 
-  if (lbClose) lbClose.addEventListener('click', closeLightbox);
-  if (lbPrev) lbPrev.addEventListener('click', () => showLightboxRelative(-1));
-  if (lbNext) lbNext.addEventListener('click', () => showLightboxRelative(1));
+  if (lbClose) lbClose.addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
+  if (lbPrev) lbPrev.addEventListener('click', (e) => { e.stopPropagation(); showLightboxRelative(-1); });
+  if (lbNext) lbNext.addEventListener('click', (e) => { e.stopPropagation(); showLightboxRelative(1); });
 
+  // Vuốt chuyển ảnh trên điện thoại cho Album Lightbox
+  let lbTouchStartX = 0;
+  let lbTouchStartY = 0;
   if (lightbox) {
+    lightbox.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        lbTouchStartX = e.touches[0].clientX;
+        lbTouchStartY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    lightbox.addEventListener('touchend', (e) => {
+      if (e.changedTouches.length === 1) {
+        const deltaX = e.changedTouches[0].clientX - lbTouchStartX;
+        const deltaY = e.changedTouches[0].clientY - lbTouchStartY;
+        if (Math.abs(deltaX) > 35 && Math.abs(deltaX) > Math.abs(deltaY)) {
+          if (deltaX < 0) {
+            showLightboxRelative(1);
+          } else {
+            showLightboxRelative(-1);
+          }
+        }
+      }
+    }, { passive: true });
+
     lightbox.addEventListener('click', (e) => {
       if (e.target === lightbox) closeLightbox();
     });

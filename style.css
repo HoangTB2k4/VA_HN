@@ -1229,22 +1229,29 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 
 @media (max-width: 640px) {
   .story-modal-card {
-    padding: 20px 16px 16px;
+    padding: 20px 14px 14px;
     width: 95vw;
   }
   .story-modal-arrow {
     position: absolute;
-    top: 45%;
-    z-index: 10;
-    width: 36px;
-    height: 36px;
-    font-size: 1.4rem;
-    background: rgba(255, 255, 255, 0.85);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 30;
+    width: 44px;
+    height: 44px;
+    font-size: 1.6rem;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--color-ink);
+    border: 1px solid var(--color-gold);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .story-modal-prev { left: 8px; }
-  .story-modal-next { right: 8px; }
+  .story-modal-prev { left: 6px; }
+  .story-modal-next { right: 6px; }
   .story-modal-media-wrap img {
-    max-height: 42vh;
+    max-height: 48vh;
   }
   .story-thumb {
     width: 52px;
@@ -1725,11 +1732,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   position: fixed;
   inset: 0;
   background: rgba(15, 12, 9, 0.94);
-  backdrop-filter: blur(10px);
-  z-index: 900;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 10000;
   display: none;
   align-items: center;
   justify-content: center;
+  touch-action: pan-y;
 }
 .lightbox.is-open { display: flex; }
 .lightbox img {
@@ -1739,6 +1748,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   border-radius: 8px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.5);
   animation: lightbox-in 0.3s ease both;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 @keyframes lightbox-in {
   from { opacity: 0; transform: scale(0.96); }
@@ -1746,28 +1757,80 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 .lightbox-close {
   position: absolute;
-  top: 24px; right: 28px;
-  font-size: 2.2rem;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   color: #fff;
+  font-size: 2rem;
   line-height: 1;
-  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  z-index: 10010;
+  cursor: pointer;
 }
-.lightbox-close:hover { color: var(--color-gold); }
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--color-ink);
+}
 .lightbox-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 2.8rem;
-  color: #fff;
-  padding: 8px 18px;
-  opacity: 0.8;
-  transition: opacity 0.2s ease, color 0.2s ease;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(198, 164, 104, 0.7);
+  color: #2B241F;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  z-index: 10010;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  padding: 0;
+  line-height: 1;
 }
-.lightbox-nav:hover { opacity: 1; color: var(--color-gold); }
-.lightbox-prev { left: 12px; }
-.lightbox-next { right: 12px; }
-@media (max-width: 560px) {
-  .lightbox-nav { font-size: 2.2rem; padding: 6px 12px; }
+.lightbox-nav:hover {
+  background: var(--color-olive-dark);
+  color: #FFFFFF;
+  border-color: var(--color-olive-dark);
+  transform: translateY(-50%) scale(1.08);
+}
+.lightbox-prev { left: 16px; }
+.lightbox-next { right: 16px; }
+
+@media (max-width: 640px) {
+  .lightbox img {
+    max-width: 94vw;
+    max-height: 80vh;
+  }
+  .lightbox-close {
+    top: 14px;
+    right: 14px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.75rem;
+    background: rgba(0, 0, 0, 0.6);
+  }
+  .lightbox-nav {
+    width: 44px;
+    height: 44px;
+    font-size: 1.7rem;
+    background: rgba(255, 255, 255, 0.95);
+    color: #1A140F;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  }
+  .lightbox-prev { left: 8px; }
+  .lightbox-next { right: 8px; }
 }
 
 /* ---------- 11. RSVP FORM (SANG TRỌNG) ---------- */
