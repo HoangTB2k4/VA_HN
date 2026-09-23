@@ -392,6 +392,30 @@ if (musicToggle) {
       });
     }
 
+    // Vuốt chuyển card trực tiếp trên điện thoại
+    let cardTouchStartX = 0;
+    let cardTouchStartY = 0;
+    stack.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        cardTouchStartX = e.touches[0].clientX;
+        cardTouchStartY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    stack.addEventListener('touchend', (e) => {
+      if (e.changedTouches.length === 1) {
+        const deltaX = e.changedTouches[0].clientX - cardTouchStartX;
+        const deltaY = e.changedTouches[0].clientY - cardTouchStartY;
+        if (Math.abs(deltaX) > 35 && Math.abs(deltaX) > Math.abs(deltaY)) {
+          if (deltaX < 0) {
+            setCardIndex(cardIndex + 1);
+          } else {
+            setCardIndex(cardIndex - 1);
+          }
+        }
+      }
+    }, { passive: true });
+
     stack.addEventListener('click', (e) => {
       if (e.target.closest('.stack-btn') || e.target.closest('.stack-dot')) return;
       openModal(stack, cardIndex);
