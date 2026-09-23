@@ -1176,6 +1176,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   display: block;
   object-fit: cover;
   object-position: center;
+  image-orientation: from-image;
   border-radius: calc(var(--radius-md) - 1px);
   transition: transform 0.6s ease;
   image-rendering: -webkit-optimize-contrast;
