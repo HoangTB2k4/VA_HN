@@ -124,46 +124,92 @@ if ('scrollRestoration' in history) {
 }
 window.scrollTo(0, 0);
 
-// Tạo Audio object động (KHÔNG dùng thẻ <audio> trong HTML)
-// → Trình duyệt không thể restore/autoplay từ session cache
+/* ---------------------------------------------------------
+   1B. VINYL RECORD POPUP
+   --------------------------------------------------------- */
+
+// Audio variables & Gain Booster (khai báo sớm để vinyl popup dùng được)
 let bgAudio = null;
+let audioCtx = null;
+let gainNode = null;
+let sourceNode = null;
 const musicToggle = document.getElementById('music-toggle');
 
 function updateMusicUI(isPlaying) {
   if (!musicToggle) return;
-  if (isPlaying) {
-    musicToggle.classList.add('is-playing');
-  } else {
-    musicToggle.classList.remove('is-playing');
-  }
+  if (isPlaying) { musicToggle.classList.add('is-playing'); }
+  else { musicToggle.classList.remove('is-playing'); }
 }
 
 function getOrCreateAudio() {
   if (!bgAudio) {
     bgAudio = new Audio('assets/audio/vay-cuoi.mp3');
     bgAudio.loop = true;
-    bgAudio.volume = 0.55;
-    bgAudio.preload = 'none';
-    // Khi nhạc kết thúc (phòng trường hợp loop bị lỗi)
+    bgAudio.volume = 1.0;
+    bgAudio.preload = 'auto';
     bgAudio.addEventListener('ended', () => updateMusicUI(false));
+
+    // Web Audio API Gain Node — Khuếch đại chuẩn xuất ra loa không bị nén âm lượng
+    try {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (AudioContextClass) {
+        audioCtx = new AudioContextClass();
+        sourceNode = audioCtx.createMediaElementSource(bgAudio);
+        gainNode = audioCtx.createGain();
+        gainNode.gain.value = 1.8; // Khuếch đại mượt mà không bị bóp tiếng
+
+        sourceNode.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+      }
+    } catch (err) {
+      console.warn('Web Audio API GainNode not active:', err);
+    }
   }
+
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+
   return bgAudio;
 }
 
+(function initVinylPopup() {
+  const popup    = document.getElementById('vinyl-popup');
+  const disc     = document.getElementById('vpc-disc');
+  const needle   = document.getElementById('vpc-needle');
+  const openBtn  = document.getElementById('vinyl-open-btn');
+  if (!popup || !openBtn) return;
+
+  function closePopup() {
+    popup.classList.add('is-closed');
+    setTimeout(() => { popup.style.display = 'none'; }, 800);
+  }
+
+  openBtn.addEventListener('click', () => {
+    if (needle) needle.classList.add('is-playing');
+
+    const audio = getOrCreateAudio();
+    if (audio.paused) {
+      audio.play().then(() => updateMusicUI(true)).catch(() => {});
+    }
+
+    setTimeout(closePopup, 500);
+  });
+
+  if (disc) disc.addEventListener('click', () => openBtn.click());
+})();
+
+/* ---------------------------------------------------------
+   2. NHẠC NỀN — Nút âm nhạc toggle
+   --------------------------------------------------------- */
 // Nút biểu tượng âm nhạc: Chỉ bấm vào icon mới phát / tắt nhạc
 if (musicToggle) {
   musicToggle.addEventListener('click', (e) => {
     e.stopPropagation();
     const audio = getOrCreateAudio();
     if (audio.paused) {
-      // Đang tắt -> Bật nhạc
-      audio.play().then(() => {
-        updateMusicUI(true);
-      }).catch(() => {
-        updateMusicUI(false);
-      });
+      audio.play().then(() => updateMusicUI(true)).catch(() => updateMusicUI(false));
     } else {
-      // Đang phát -> Tắt nhạc
       audio.pause();
       updateMusicUI(false);
     }
