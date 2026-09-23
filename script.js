@@ -22,11 +22,12 @@ const WEDDING_DATETIME = "2026-10-04T13:30:00+07:00";
   window.addEventListener('resize', () => {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
-  });
+  }, { passive: true });
 
   const petals = [];
-  const TOTAL_PETALS = 28;
-  const TOTAL_SPARKLES = 20;
+  const isMobile = window.innerWidth < 768;
+  const TOTAL_PETALS = isMobile ? 14 : 26;
+  const TOTAL_SPARKLES = isMobile ? 10 : 18;
 
   class Petal {
     constructor() {
@@ -103,6 +104,7 @@ const WEDDING_DATETIME = "2026-10-04T13:30:00+07:00";
   for (let i = 0; i < TOTAL_PETALS; i++) petals.push(new Petal());
   for (let i = 0; i < TOTAL_SPARKLES; i++) petals.push(new Sparkle());
 
+  let animFrameId = null;
   function animate() {
     if (!document.hidden) {
       ctx.clearRect(0, 0, width, height);
@@ -111,8 +113,17 @@ const WEDDING_DATETIME = "2026-10-04T13:30:00+07:00";
         p.draw();
       });
     }
-    requestAnimationFrame(animate);
+    animFrameId = requestAnimationFrame(animate);
   }
+  
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (animFrameId) cancelAnimationFrame(animFrameId);
+    } else {
+      animFrameId = requestAnimationFrame(animate);
+    }
+  });
+
   animate();
 })();
 
@@ -146,7 +157,7 @@ function getOrCreateAudio() {
     bgAudio = new Audio('assets/audio/vay-cuoi.mp3');
     bgAudio.loop = true;
     bgAudio.volume = 1.0;
-    bgAudio.preload = 'auto';
+    bgAudio.preload = 'none';
     bgAudio.addEventListener('ended', () => updateMusicUI(false));
 
     // Web Audio API Gain Node — Khuếch đại chuẩn xuất ra loa không bị nén âm lượng
@@ -749,7 +760,8 @@ if (musicToggle) {
   revealTargets.forEach((el) => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(16px)';
-    el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+    el.style.transition = 'opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)';
+    el.style.willChange = 'opacity, transform';
   });
 
   const observer = new IntersectionObserver(
@@ -758,11 +770,14 @@ if (musicToggle) {
         if (entry.isIntersecting) {
           entry.target.style.opacity = '1';
           entry.target.style.transform = 'translateY(0)';
+          setTimeout(() => {
+            entry.target.style.willChange = 'auto';
+          }, 650);
           observer.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.15 }
+    { threshold: 0.12 }
   );
 
   revealTargets.forEach((el) => observer.observe(el));
